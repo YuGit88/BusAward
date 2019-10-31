@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.UserRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.UserRole" >
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+  </resultMap>
+  <!-- 根据用户ID删除-->
+  <delete id="deleteByUserId">
+  	delete from b_user_role where user_id =  #{userId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteRoleByUserIds">
+  	delete from b_user_role where user_id in(#{userIds,jdbcType=VARCHAR})
+  </delete>
+  <!-- 根据用户roleId查询用户ID -->
+  <select id="findUserIdByRoleId" resultType="Integer">
+  	select user_id from b_user_role where role_id =  #{roleId,jdbcType=BIGINT}
+  </select>
+  
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.UserRole" >
+    insert into b_user_role (user_id, role_id)
+    values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.UserRole" >
+    insert into b_user_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

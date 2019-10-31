@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/bus/!svn/ver/16/busAward/src/main/webapp/WEB-INF/ftl/common/config
+END
+top.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/bus/!svn/ver/17/busAward/src/main/webapp/WEB-INF/ftl/common/config/top.ftl
+END
+left.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/bus/!svn/ver/19/busAward/src/main/webapp/WEB-INF/ftl/common/config/left.ftl
+END

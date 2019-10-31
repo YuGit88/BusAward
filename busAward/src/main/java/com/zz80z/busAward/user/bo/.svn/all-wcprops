@@ -1,0 +1,107 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/bus/!svn/ver/15/busAward/src/main/java/com/zz80z/busAward/user/bo
+END
+RolePermissionAllocationBo.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/user/bo/RolePermissionAllocationBo.java
+END
+StudentScoreBo.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/bus/!svn/ver/7/busAward/src/main/java/com/zz80z/busAward/user/bo/StudentScoreBo.java
+END
+UserOnlineBo.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/user/bo/UserOnlineBo.java
+END
+ClassWeekAdvanced.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bus/!svn/ver/17/busAward/src/main/java/com/zz80z/busAward/user/bo/ClassWeekAdvanced.java
+END
+PermissionBo.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/user/bo/PermissionBo.java
+END
+classAndClassDay.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bus/!svn/ver/17/busAward/src/main/java/com/zz80z/busAward/user/bo/classAndClassDay.java
+END
+SubjectBo.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/bus/!svn/ver/4/busAward/src/main/java/com/zz80z/busAward/user/bo/SubjectBo.java
+END
+ClassMark.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/user/bo/ClassMark.java
+END
+ScoreProgressBo.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/user/bo/ScoreProgressBo.java
+END
+TeacherClassBo.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/user/bo/TeacherClassBo.java
+END
+RoleBo.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/bus/!svn/ver/15/busAward/src/main/java/com/zz80z/busAward/user/bo/RoleBo.java
+END
+GradeAndSubject.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/user/bo/GradeAndSubject.java
+END
+UserRoleAllocationBo.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/user/bo/UserRoleAllocationBo.java
+END
+SubjetTeacher.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/bus/!svn/ver/5/busAward/src/main/java/com/zz80z/busAward/user/bo/SubjetTeacher.java
+END
+StudentAdvancedGroup.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/bus/!svn/ver/9/busAward/src/main/java/com/zz80z/busAward/user/bo/StudentAdvancedGroup.java
+END
+SubjectData.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/bus/!svn/ver/15/busAward/src/main/java/com/zz80z/busAward/user/bo/SubjectData.java
+END
+ScoreBo.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/bus/!svn/ver/8/busAward/src/main/java/com/zz80z/busAward/user/bo/ScoreBo.java
+END

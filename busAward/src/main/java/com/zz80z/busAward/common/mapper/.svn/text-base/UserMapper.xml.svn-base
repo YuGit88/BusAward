@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.UserMapper">
+	<resultMap id="BaseResultMap"
+		type="com.zz80z.busAward.common.model.User">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="CHAR" />
+		<result column="user_name" property="userName"
+			jdbcType="VARCHAR" />
+		<result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+		<result column="last_login_time" property="lastLoginTime"
+			jdbcType="TIMESTAMP" />
+		<result column="satus" property="satus" jdbcType="INTEGER" />
+	</resultMap>
+	<!-- 根据userName 获得信息 -->
+	<select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from b_user
+		where user_name = #{userName,jdbcType=VARCHAR}
+	</select>
+	<!-- 登录 -->
+	<select id="login" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from b_user
+		where user_name = #{userName,jdbcType=VARCHAR} and user_pwd
+		= #{userPwd,jdbcType=VARCHAR}
+	</select>
+	<!-- 批量导入用户信息 -->
+	<insert id="leadUser" parameterType="java.util.List">
+		REPLACE INTO b_user(user_name, type, user_pwd,satus)
+		<foreach collection="list" item="item" index="index"
+			separator="union all">
+			(SELECT #{item.userName}, #{item.type}, #{item.userPwd}, #{item.satus}
+			FROM DUAL WHERE NOT EXISTS
+			(SELECT user_id FROM b_user WHERE user_name = #{item.userName}))
+		</foreach>
+	</insert>
+	<sql id="limit_sql">
+		<if test="page_sql != null and page_sql != ''">
+			${page_sql}
+		</if>
+	</sql>
+	<sql id="where_all">
+		<where>
+			<if test="findContent != null and findContent !='' ">
+				and (
+				LOWER(user_name) like
+				LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%"))
+				)
+			</if>
+		</where>
+	</sql>
+	<select id="findAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from b_user
+		<include refid="where_all" />
+		<include refid="limit_sql" />
+	</select>
+	<select id="findCount" resultMap="BaseResultMap">
+		select count(user_id) from b_user where LENGTH(user_name)=7
+		<include refid="where_all" />
+	</select>
+	<!-- 用户权限分配的分页查询 -->
+	<select id="findUserAndRole" resultType="com.zz80z.busAward.user.bo.UserRoleAllocationBo">
+		select
+		u.user_id,u.user_name,u.last_login_time,u.satus
+		,group_concat(ur.role_name) roleNames,group_concat(ur.role_id)roleIds
+		from
+		b_user u
+		left join b_user_role uur on uur.user_id = u.user_id
+		left
+		join b_role ur
+		on ur.role_id = uur.role_id
+		<where>
+			<if test="true">
+				and length(u.user_name)=7
+			</if>
+			<if test="findContent != null and findContent !='' ">
+				and (
+				LOWER(u.user_name) like
+				LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%"))
+				)
+			</if>
+		</where>
+		group by u.user_name
+		<include refid="where_all" />
+		<include refid="limit_sql" />
+	</select>
+	<select id="selectRoleByUserId"
+		resultType="com.zz80z.busAward.user.bo.RoleBo">
+		select ur.role_id,ur.role_name,ifnull(uu.user_id,0)marker,uu.user_id userId from b_role ur
+		left join b_user_role uur on uur.role_id = ur.role_id
+		left join (select user_id from b_user where user_id =#{userId,jdbcType=BIGINT}) uu on uu.user_id = uur.user_id
+		group by ur.role_id
+	</select>
+
+	<sql id="Base_Column_List">
+		user_id, type, user_name, user_pwd, last_login_time, satus
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from b_user
+		where user_id = #{userId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from b_user
+		where user_id =
+		#{userId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.zz80z.busAward.common.model.User">
+		insert into b_user (user_id,
+		type, user_name,
+		user_pwd,
+		last_login_time, satus
+		)
+		values
+		(#{userId,jdbcType=INTEGER},
+		#{type,jdbcType=CHAR},
+		#{userName,jdbcType=VARCHAR},
+		#{userPwd,jdbcType=VARCHAR},
+		#{lastLoginTime,jdbcType=TIMESTAMP},
+		#{satus,jdbcType=INTEGER}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.zz80z.busAward.common.model.User">
+		insert into b_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="userPwd != null">
+				user_pwd,
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time,
+			</if>
+			<if test="satus != null">
+				satus,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=CHAR},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userPwd != null">
+				#{userPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="lastLoginTime != null">
+				#{lastLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="satus != null">
+				#{satus,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.zz80z.busAward.common.model.User">
+		update b_user
+		<set>
+			<if test="type != null">
+				type = #{type,jdbcType=CHAR},
+			</if>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userPwd != null">
+				user_pwd = #{userPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="satus != null">
+				satus = #{satus,jdbcType=INTEGER},
+			</if>
+		</set>
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.zz80z.busAward.common.model.User">
+		update b_user
+		set
+		type = #{type,jdbcType=CHAR},
+		user_name =
+		#{userName,jdbcType=VARCHAR},
+		user_pwd = #{userPwd,jdbcType=VARCHAR},
+		last_login_time =
+		#{lastLoginTime,jdbcType=TIMESTAMP},
+		satus =
+		#{satus,jdbcType=INTEGER}
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+</mapper>

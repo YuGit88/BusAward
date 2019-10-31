@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.AwardMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.Award" >
+    <id column="award_id" property="awardId" jdbcType="INTEGER" />
+    <result column="advanced_group" property="advancedGroup" jdbcType="INTEGER" />
+    <result column="progress_group" property="progressGroup" jdbcType="INTEGER" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="first_best" property="firstBest" jdbcType="INTEGER" />
+    <result column="first_better" property="firstBetter" jdbcType="INTEGER" />
+    <result column="first_subject" property="firstSubject" jdbcType="INTEGER" />
+    <result column="progress_grade" property="progressGrade" jdbcType="INTEGER" />
+    <result column="progress_class" property="progressClass" jdbcType="INTEGER" />
+    <result column="advanced_class" property="advancedClass" jdbcType="INTEGER" />
+    <result column="activiyt_duty" property="activiytDuty" jdbcType="INTEGER" />
+    <result column="activiyt_first" property="activiytFirst" jdbcType="INTEGER" />
+    <result column="activiyt_second" property="activiytSecond" jdbcType="INTEGER" />
+    <result column="activiyt_third" property="activiytThird" jdbcType="INTEGER" />
+    <result column="week_coin" property="weekCoin" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    award_id, advanced_group, progress_group, level, first_best, first_better, first_subject, 
+    progress_grade, progress_class, advanced_class, activiyt_duty, activiyt_first, activiyt_second, 
+    activiyt_third, week_coin
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_award
+    where award_id = #{awardId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_award
+    where award_id = #{awardId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.Award" >
+    insert into b_award (award_id, advanced_group, progress_group, 
+      level, first_best, first_better, 
+      first_subject, progress_grade, progress_class, 
+      advanced_class, activiyt_duty, activiyt_first, 
+      activiyt_second, activiyt_third, week_coin
+      )
+    values (#{awardId,jdbcType=INTEGER}, #{advancedGroup,jdbcType=INTEGER}, #{progressGroup,jdbcType=INTEGER}, 
+      #{level,jdbcType=INTEGER}, #{firstBest,jdbcType=INTEGER}, #{firstBetter,jdbcType=INTEGER}, 
+      #{firstSubject,jdbcType=INTEGER}, #{progressGrade,jdbcType=INTEGER}, #{progressClass,jdbcType=INTEGER}, 
+      #{advancedClass,jdbcType=INTEGER}, #{activiytDuty,jdbcType=INTEGER}, #{activiytFirst,jdbcType=INTEGER}, 
+      #{activiytSecond,jdbcType=INTEGER}, #{activiytThird,jdbcType=INTEGER}, #{weekCoin,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.Award" >
+    insert into b_award
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="awardId != null" >
+        award_id,
+      </if>
+      <if test="advancedGroup != null" >
+        advanced_group,
+      </if>
+      <if test="progressGroup != null" >
+        progress_group,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="firstBest != null" >
+        first_best,
+      </if>
+      <if test="firstBetter != null" >
+        first_better,
+      </if>
+      <if test="firstSubject != null" >
+        first_subject,
+      </if>
+      <if test="progressGrade != null" >
+        progress_grade,
+      </if>
+      <if test="progressClass != null" >
+        progress_class,
+      </if>
+      <if test="advancedClass != null" >
+        advanced_class,
+      </if>
+      <if test="activiytDuty != null" >
+        activiyt_duty,
+      </if>
+      <if test="activiytFirst != null" >
+        activiyt_first,
+      </if>
+      <if test="activiytSecond != null" >
+        activiyt_second,
+      </if>
+      <if test="activiytThird != null" >
+        activiyt_third,
+      </if>
+      <if test="weekCoin != null" >
+        week_coin,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="awardId != null" >
+        #{awardId,jdbcType=INTEGER},
+      </if>
+      <if test="advancedGroup != null" >
+        #{advancedGroup,jdbcType=INTEGER},
+      </if>
+      <if test="progressGroup != null" >
+        #{progressGroup,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="firstBest != null" >
+        #{firstBest,jdbcType=INTEGER},
+      </if>
+      <if test="firstBetter != null" >
+        #{firstBetter,jdbcType=INTEGER},
+      </if>
+      <if test="firstSubject != null" >
+        #{firstSubject,jdbcType=INTEGER},
+      </if>
+      <if test="progressGrade != null" >
+        #{progressGrade,jdbcType=INTEGER},
+      </if>
+      <if test="progressClass != null" >
+        #{progressClass,jdbcType=INTEGER},
+      </if>
+      <if test="advancedClass != null" >
+        #{advancedClass,jdbcType=INTEGER},
+      </if>
+      <if test="activiytDuty != null" >
+        #{activiytDuty,jdbcType=INTEGER},
+      </if>
+      <if test="activiytFirst != null" >
+        #{activiytFirst,jdbcType=INTEGER},
+      </if>
+      <if test="activiytSecond != null" >
+        #{activiytSecond,jdbcType=INTEGER},
+      </if>
+      <if test="activiytThird != null" >
+        #{activiytThird,jdbcType=INTEGER},
+      </if>
+      <if test="weekCoin != null" >
+        #{weekCoin,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.Award" >
+    update b_award
+    <set >
+      <if test="advancedGroup != null" >
+        advanced_group = #{advancedGroup,jdbcType=INTEGER},
+      </if>
+      <if test="progressGroup != null" >
+        progress_group = #{progressGroup,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="firstBest != null" >
+        first_best = #{firstBest,jdbcType=INTEGER},
+      </if>
+      <if test="firstBetter != null" >
+        first_better = #{firstBetter,jdbcType=INTEGER},
+      </if>
+      <if test="firstSubject != null" >
+        first_subject = #{firstSubject,jdbcType=INTEGER},
+      </if>
+      <if test="progressGrade != null" >
+        progress_grade = #{progressGrade,jdbcType=INTEGER},
+      </if>
+      <if test="progressClass != null" >
+        progress_class = #{progressClass,jdbcType=INTEGER},
+      </if>
+      <if test="advancedClass != null" >
+        advanced_class = #{advancedClass,jdbcType=INTEGER},
+      </if>
+      <if test="activiytDuty != null" >
+        activiyt_duty = #{activiytDuty,jdbcType=INTEGER},
+      </if>
+      <if test="activiytFirst != null" >
+        activiyt_first = #{activiytFirst,jdbcType=INTEGER},
+      </if>
+      <if test="activiytSecond != null" >
+        activiyt_second = #{activiytSecond,jdbcType=INTEGER},
+      </if>
+      <if test="activiytThird != null" >
+        activiyt_third = #{activiytThird,jdbcType=INTEGER},
+      </if>
+      <if test="weekCoin != null" >
+        week_coin = #{weekCoin,jdbcType=INTEGER},
+      </if>
+    </set>
+    where award_id =  #{awardId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.Award" >
+    update b_award
+    set advanced_group = #{advancedGroup,jdbcType=INTEGER},
+      progress_group = #{progressGroup,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER},
+      first_best = #{firstBest,jdbcType=INTEGER},
+      first_better = #{firstBetter,jdbcType=INTEGER},
+      first_subject = #{firstSubject,jdbcType=INTEGER},
+      progress_grade = #{progressGrade,jdbcType=INTEGER},
+      progress_class = #{progressClass,jdbcType=INTEGER},
+      advanced_class = #{advancedClass,jdbcType=INTEGER},
+      activiyt_duty = #{activiytDuty,jdbcType=INTEGER},
+      activiyt_first = #{activiytFirst,jdbcType=INTEGER},
+      activiyt_second = #{activiytSecond,jdbcType=INTEGER},
+      activiyt_third = #{activiytThird,jdbcType=INTEGER},
+      week_coin = #{weekCoin,jdbcType=INTEGER}
+    where award_id = #{awardId,jdbcType=INTEGER}
+  </update>
+</mapper>

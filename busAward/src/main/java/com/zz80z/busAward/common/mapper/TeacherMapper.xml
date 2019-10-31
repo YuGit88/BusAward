@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.TeacherMapper">
+	<resultMap id="BaseResultMap"
+		type="com.zz80z.busAward.common.model.Teacher">
+		<id column="tch_id" property="tchId" jdbcType="INTEGER" />
+		<result column="tch_name" property="tchName" jdbcType="VARCHAR" />
+		<result column="tch_no" property="tchNo" jdbcType="VARCHAR" />
+		<result column="tch_phone" property="tchPhone" jdbcType="VARCHAR" />
+		<result column="tch_subject" property="tchSubject" jdbcType="INTEGER" />
+		<result column="reserve" property="reserve" jdbcType="VARCHAR" />
+		<association property="subject" column="stuject_id" javaType="com.zz80z.busAward.common.model.Subject">
+			<id column="subject_id" property="subjectId" jdbcType="INTEGER" />
+		    <result column="subject_name" property="subjectName" jdbcType="VARCHAR" />
+		    <result column="remark" property="remark" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<sql id="Base_Column_List">
+		tch_id, tch_name, tch_no, tch_phone, tch_subject, reserve
+	</sql>
+	<sql id="limit_sql">
+		<if test="page_sql != null and page_sql != ''">
+			${page_sql}
+		</if>
+	</sql>
+	<sql id="where_all">
+		<where>
+			<if test="findContent != null and findContent !='' ">
+				and (
+				LOWER(tch_name) like
+				LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%")) or
+				LOWER(tch_no) like
+				LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%"))
+				)
+			</if>
+		</where>
+	</sql>
+	<select id="findAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from b_teacher
+		<include refid="where_all" />
+		<include refid="limit_sql" />
+	</select>
+	<select id="findCount" resultMap="BaseResultMap">
+		select count(tch_id) from b_teacher
+		<include refid="where_all" />
+	</select>
+	<select id="selectTeacherAndClass" resultType="com.zz80z.busAward.user.bo.TeacherClassBo">
+		select
+		bt.tch_id,bt.tch_name,bt.tch_no,bt.tch_phone,bs.subject_name tchSubject,group_concat((CASE
+		bc.grade_name WHEN 1 THEN "七年级" WHEN 2 THEN "八年级 "END),bc.class_name)
+		classNames,group_concat(bc.class_id)classIds
+		from 
+		b_teacher bt left join b_class_teacher bct on bct.tch_id = bt.tch_id
+		left join b_class bc on bc.class_id = bct.class_id
+		left join b_subject bs on  bt.tch_subject = bs.subject_id
+		group by bt.tch_id
+	</select>
+	<!-- 根据工号获得教师信息 -->
+	<select id="selectByTchNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		T.tch_id,T.tch_name,T.tch_no,T.tch_phone,T.tch_subject,S.subject_name
+		from b_teacher T left join b_subject S on T.tch_subject = S.subject_id
+		where tch_no = #{tchNo,jdbcType=VARCHAR}
+	</select>
+	<select id="leadTeacher" parameterType="java.util.List">
+		INSERT INTO b_teacher(tch_name, tch_no, tch_phone, tch_subject)
+		<foreach collection="list" item="item" index="index"
+			separator="union all">
+			(SELECT #{item.tchName}, #{item.tchNo}, #{item.tchPhone},
+			#{item.tchSubject}
+			FROM DUAL WHERE NOT EXISTS
+			(SELECT tch_id FROM
+			b_teacher WHERE
+			tch_no = #{item.tchNo}))
+		</foreach>
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from b_teacher
+		where tch_id = #{tchId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from b_teacher
+		where tch_id =
+		#{tchId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zz80z.busAward.common.model.Teacher">
+		insert into b_teacher (tch_id, tch_name, tch_no,
+		tch_phone, tch_subject, reserve
+		)
+		values (#{tchId,jdbcType=INTEGER},
+		#{tchName,jdbcType=VARCHAR},
+		#{tchNo,jdbcType=VARCHAR},
+		#{tchPhone,jdbcType=VARCHAR}, #{tchSubject,jdbcType=INTEGER},
+		#{reserve,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.Teacher">
+		insert into b_teacher
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="tchId != null">
+				tch_id,
+			</if>
+			<if test="tchName != null">
+				tch_name,
+			</if>
+			<if test="tchNo != null">
+				tch_no,
+			</if>
+			<if test="tchPhone != null">
+				tch_phone,
+			</if>
+			<if test="tchSubject != null">
+				tch_subject,
+			</if>
+			<if test="reserve != null">
+				reserve,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="tchId != null">
+				#{tchId,jdbcType=INTEGER},
+			</if>
+			<if test="tchName != null">
+				#{tchName,jdbcType=VARCHAR},
+			</if>
+			<if test="tchNo != null">
+				#{tchNo,jdbcType=VARCHAR},
+			</if>
+			<if test="tchPhone != null">
+				#{tchPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="tchSubject != null">
+				#{tchSubject,jdbcType=INTEGER},
+			</if>
+			<if test="reserve != null">
+				#{reserve,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.Teacher">
+		update b_teacher
+		<set>
+			<if test="tchName != null">
+				tch_name = #{tchName,jdbcType=VARCHAR},
+			</if>
+			<if test="tchNo != null">
+				tch_no = #{tchNo,jdbcType=VARCHAR},
+			</if>
+			<if test="tchPhone != null">
+				tch_phone = #{tchPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="tchSubject != null">
+				tch_subject = #{tchSubject,jdbcType=INTEGER},
+			</if>
+			<if test="reserve != null">
+				reserve = #{reserve,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where tch_id = #{tchId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.Teacher">
+		update b_teacher
+		set tch_name =
+		#{tchName,jdbcType=VARCHAR},
+		tch_no = #{tchNo,jdbcType=VARCHAR},
+		tch_phone = #{tchPhone,jdbcType=VARCHAR},
+		tch_subject =
+		#{tchSubject,jdbcType=INTEGER},
+		reserve = #{reserve,jdbcType=VARCHAR}
+		where tch_id = #{tchId,jdbcType=INTEGER}
+	</update>
+	
+		<select id="selectTeacherAndSubject" resultMap="BaseResultMap">
+	select * from b_teacher bt,b_subject bs where bt.tch_subject=bs.subject_id
+	</select>
+	
+	<select id="selectTeacherAndSubjectByClassId" parameterType="int" resultMap="BaseResultMap">
+	select * from b_teacher bt,b_subject bs where bt.tch_subject=bs.subject_id  and bt.tch_id in
+(select tch_id from b_class_teacher where class_id=#{classId})
+	</select>
+	
+</mapper>

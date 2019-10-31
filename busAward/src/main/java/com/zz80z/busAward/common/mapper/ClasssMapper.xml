@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.ClasssMapper">
+	<resultMap id="BaseResultMap"
+		type="com.zz80z.busAward.common.model.Classs">
+		<id column="class_id" property="classId" jdbcType="INTEGER" />
+		<result column="class_name" property="className" jdbcType="VARCHAR" />
+		<result column="grade_name" property="gradeName" jdbcType="INTEGER" />
+		<result column="class_category" property="classCategory" jdbcType="CHAR" />
+		<result column="head_tch" property="headTch" jdbcType="INTEGER" />
+		<result column="stu_class_mark" property="stuClassMark" jdbcType="VARCHAR" />
+		<result column="reserve" property="reserve" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<association property="gradeName" javaType="com.zz80z.busAward.common.model.Grade"
+			select="selectGradeByGradeId" column="gradeId"></association>
+		<association property="teacher" column="tch_id"
+			javaType="com.zz80z.busAward.common.model.Teacher">
+			<id column="tch_id" property="tchId" jdbcType="INTEGER" />
+			<result column="tch_name" property="tchName"
+				jdbcType="VARCHAR" />
+			<result column="tch_no" property="tchNo" jdbcType="VARCHAR" />
+			<result column="tch_phone" property="tchPhone"
+				jdbcType="VARCHAR" />
+			<result column="tch_subject" property="tchSubject"
+				jdbcType="INTEGER" />
+			<result column="reserve" property="reserve" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<select id="selectGradeByGradeId"
+		resultType="com.zz80z.busAward.common.model.Grade">
+		select * from b_grade where grade_id = #{gradeId,jdbcType=INTEGER}
+	</select>
+	<sql id="Base_Column_List">
+		class_id, class_name, grade_name, class_category, head_tch, stu_class_mark,
+		reserve
+	</sql>
+	<sql id="limit_sql">
+		<if test="page_sql != null and page_sql != ''">
+			${page_sql}
+		</if>
+	</sql>
+	<sql id="where_all">
+		<where>
+			<if test="findContent != null and findContent !='' ">
+				and (
+				LOWER(class_name) like
+				CONCAT("%",#{findContent,jdbcType=VARCHAR},"%")
+				)
+			</if>
+		</where>
+	</sql>
+	<select id="selectStuByClass" resultType="com.zz80z.busAward.common.model.Student" parameterType="java.lang.String">
+		select *
+		from b_student 	
+		where stu_class_mark = #{classMark}
+	</select>
+	<select id="selecGroupByClass" resultType="com.zz80z.busAward.common.model.Group">
+	
+		SELECT
+		DISTINCT stu_group groupName
+		FROM
+		b_student
+		WHERE stu_class_mark =#{classMark}
+	
+	</select>
+	<!-- 普通的分页查询 -->
+	<select id="findAll" resultMap="BaseResultMap">
+		select
+		*
+		from b_class bc,b_teacher bt where bc.head_tch=bt.tch_id
+		<include refid="where_all" />
+		<include refid="limit_sql" />
+	</select>
+	<select id="findCount" resultMap="BaseResultMap">
+		select count(class_id) from b_class
+		<include refid="where_all" />
+	</select>
+	<!--  -->
+	<select id="selectClassMarkByStr" resultMap="BaseResultMap" >
+		SELECT <include refid="Base_Column_List" /> 
+		FROM b_class 
+		<where>
+			<if test="reserve != null and reserve !=''">
+				(reserve =#{reserve})
+			</if>
+			<if test="gradeName != null and gradeName !=''">
+				and(grade_name = #{gradeName})
+			</if>
+			<if test="category != null and category !=''">
+				and(class_category =#{category})
+			</if>
+		</where>
+	</select>
+	<!-- 查询某年级 下的班级 -->
+	<select id="findByGrade" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from b_class
+		where
+		grade_name=#{gradeId} and reserve = #{reserve,jdbcType=VARCHAR}
+	</select>
+	<!--获得所有的班级标识 -->
+	<select id="findClassMark" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT DISTINCT
+		bst.stu_class_mark
+		FROM
+		b_student bst LEFT JOIN b_class bcl ON bst.class_id=bcl.class_id
+		LEFT JOIN b_class_teacher bct ON bcl.class_id = bct.class_id
+		LEFT JOIN b_teacher bte ON bct.tch_id = bte.tch_id
+		<where>
+			<if test="_parameter != null and _parameter !=''">
+				(bte.tch_no =#{_parameter})
+			</if>
+		</where>
+		ORDER BY stu_class_mark DESC
+	</select>
+	<select id="findClassByClassName" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from b_class
+		where
+		class_name= #{className} and grade_name=#{gradeName}
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from b_class
+		where class_id = #{classId,jdbcType=INTEGER}
+	</select>
+	<select id="findClassList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from b_class
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from b_class
+		where class_id = #{classId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.zz80z.busAward.common.model.Classs">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="classId">
+          SELECT LAST_INSERT_ID()
+      </selectKey>
+		insert into b_class ( class_name, grade_name,
+		class_category, head_tch, stu_class_mark,
+		reserve)
+		values ( #{className,jdbcType=VARCHAR},
+		#{gradeName,jdbcType=INTEGER},
+		#{classCategory,jdbcType=CHAR}, #{headTch,jdbcType=INTEGER}, #{stuClassMark,jdbcType=VARCHAR},
+		#{reserve,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.zz80z.busAward.common.model.Classs">
+		insert into b_class
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="classId != null">
+				class_id,
+			</if>
+			<if test="className != null">
+				class_name,
+			</if>
+			<if test="gradeName != null">
+				grade_name,
+			</if>
+			<if test="classCategory != null">
+				class_category,
+			</if>
+			<if test="headTch != null">
+				head_tch,
+			</if>
+			<if test="stuClassMark != null">
+				stu_class_mark,
+			</if>
+			<if test="reserve != null">
+				reserve,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="classId != null">
+				#{classId,jdbcType=INTEGER},
+			</if>
+			<if test="className != null">
+				#{className,jdbcType=VARCHAR},
+			</if>
+			<if test="gradeName != null">
+				#{gradeName,jdbcType=INTEGER},
+			</if>
+			<if test="classCategory != null">
+				#{classCategory,jdbcType=CHAR},
+			</if>
+			<if test="headTch != null">
+				#{headTch,jdbcType=INTEGER},
+			</if>
+			<if test="stuClassMark != null">
+				#{stuClassMark,jdbcType=VARCHAR},
+			</if>
+			<if test="reserve != null">
+				#{reserve,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.zz80z.busAward.common.model.Classs">
+		update b_class
+		<set>
+			<if test="className != null">
+				class_name = #{className,jdbcType=VARCHAR},
+			</if>
+			<if test="gradeName != null">
+				grade_name = #{gradeName,jdbcType=INTEGER},
+			</if>
+			<if test="classCategory != null">
+				class_category = #{classCategory,jdbcType=CHAR},
+			</if>
+			<if test="headTch != null">
+				head_tch = #{headTch,jdbcType=INTEGER},
+			</if>
+			<if test="stuClassMark != null">
+				stu_class_mark = #{stuClassMark,jdbcType=VARCHAR},
+			</if>
+			<if test="reserve != null">
+				reserve = #{reserve,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where class_id = #{classId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.zz80z.busAward.common.model.Classs">
+		update b_class
+		set class_name = #{className,jdbcType=VARCHAR},
+		grade_name = #{gradeName,jdbcType=INTEGER},
+		class_category = #{classCategory,jdbcType=CHAR},
+		head_tch = #{headTch,jdbcType=INTEGER},
+		stu_class_mark = #{stuClassMark,jdbcType=VARCHAR},
+		reserve = #{reserve,jdbcType=VARCHAR}
+		where class_id = #{classId,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateClassMark" parameterType="java.util.Map">
+	update  b_class SET stu_class_mark=#{classMark} where class_id=#{classId}
+	</update>
+	
+	<select id="selectClassByClassMarkAndName" parameterType="com.zz80z.busAward.common.model.Classs" resultType="com.zz80z.busAward.common.model.Classs">
+	select * from b_class where stu_class_mark=#{stuClassMark} or class_name=#{className} and grade_name=#{gradeName}
+	</select>
+	
+	<insert id="insertClass" parameterType="com.zz80z.busAward.common.model.Classs">
+		insert into b_class (class_id, class_name, grade_name,
+		class_category, stu_class_mark,
+		reserve,remark)
+		values (#{classId,jdbcType=INTEGER}, #{className,jdbcType=VARCHAR},
+		#{gradeName,jdbcType=INTEGER},
+		#{classCategory,jdbcType=CHAR}, #{stuClassMark,jdbcType=VARCHAR},
+		#{reserve,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="deleteClassTeacherByClassId" parameterType="int">
+	delete from b_class_teacher where class_id=#{classId}
+	</delete>
+	
+	<update id="updatOrInsertTchByClassId" parameterType="java.util.Map">
+	update  b_class  set head_tch=#{tchIds} where class_id=#{classId}
+	</update>
+	
+	<insert id="insertClassTeacher" parameterType="java.util.Map">
+	  insert into b_class_teacher (class_id, tch_id)  values 
+      <foreach collection="classTeachers" item="item" open="" separator=",">  
+    (#{item.classId},#{item.tchId})
+    </foreach>
+	</insert>
+	
+	<select id="selectClassByClassId" parameterType="int" resultMap="BaseResultMap">
+	select * from b_class bc,b_teacher bt where bc.class_id=#{classId} and bc.head_tch=bt.tch_id
+	</select>
+	
+	<select id="selectClassAndTeacher" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from b_class bc left join b_teacher bt on bc.head_tch=bt.tch_id 
+	where 
+				LOWER(bc.class_name) like
+				CONCAT("%",#{className,jdbcType=VARCHAR},"%")
+				and
+				bc.reserve=#{reserve}
+				
+	</select>
+	
+	<update id="updateUpClass" parameterType="java.util.Map">
+		update b_class set reserve=#{reserve} where stu_class_mark=#{classMark}
+	</update>
+	
+	<update id="updataUpStudentClassId" parameterType="java.util.Map">
+		update b_student set class_id=#{newClassId} where stu_class_mark=#{classMark}
+	</update>
+	
+	<update id="updataUpStudentReasrveAndClassId" parameterType="java.util.Map">
+	update b_student set class_id=#{classId},reserve=#{reserve} where  stu_class_mark=#{classMark}
+	</update>
+	
+	<select id="selectClass" resultType="com.zz80z.busAward.common.model.Classs">
+	select * from b_class where reserve=1
+	</select>
+	
+	<update id="updataUpClassTeacher" parameterType="java.util.Map">
+	update b_class_teacher set class_id=#{newClassId} where class_id=#{classId}
+	</update>
+	
+	<select id="selectClassByGradeNameAndClassName" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.Classs">
+	select * from b_class  where class_name=#{className} and grade_name=#{gradeName}
+	</select>
+	
+	<select id="selectMyClass" parameterType="int" resultType="com.zz80z.busAward.common.model.Classs">
+	select bc.* from b_class bc LEFT JOIN b_student bs on bs.stu_class_mark=bc.stu_class_mark where bs.stu_no=#{stuNo}
+	</select>
+	
+</mapper> 

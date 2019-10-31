@@ -1,0 +1,99 @@
+package com.zz80z.busAward.common.model;
+
+import net.sf.json.JSONObject;
+
+public class Classs {
+	private Integer classId;
+
+	private String className;
+
+	private Integer gradeName;
+
+	private Grade grade;
+
+	private String classCategory;
+
+	private Integer headTch;
+
+	private String stuClassMark;
+
+	private String reserve;
+	
+	private Teacher teacher;
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
+	public Integer getClassId() {
+		return classId;
+	}
+
+	public void setClassId(Integer classId) {
+		this.classId = classId;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className == null ? null : className.trim();
+	}
+
+	public Integer getGradeName() {
+		return gradeName;
+	}
+
+	public void setGradeName(Integer gradeName) {
+		this.gradeName = gradeName;
+	}
+
+	public String getClassCategory() {
+		return classCategory;
+	}
+
+	public void setClassCategory(String classCategory) {
+		this.classCategory = classCategory == null ? null : classCategory.trim();
+	}
+
+	public Integer getHeadTch() {
+		return headTch;
+	}
+
+	public void setHeadTch(Integer headTch) {
+		this.headTch = headTch;
+	}
+
+	public String getStuClassMark() {
+		return stuClassMark;
+	}
+
+	public void setStuClassMark(String stuClassMark) {
+		this.stuClassMark = stuClassMark == null ? null : stuClassMark.trim();
+	}
+
+	public String getReserve() {
+		return reserve;
+	}
+
+	public Grade getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Grade grade) {
+		this.grade = grade;
+	}
+
+	public void setReserve(String reserve) {
+		this.reserve = reserve == null ? null : reserve.trim();
+	}
+
+	public String toString() {
+		return JSONObject.fromObject(this).toString();
+	}
+}

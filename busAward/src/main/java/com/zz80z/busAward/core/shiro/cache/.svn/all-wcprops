@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/cache
+END
+ShiroCacheManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/cache/ShiroCacheManager.java
+END
+JedisShiroCache.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/cache/JedisShiroCache.java
+END
+JedisShiroSessionRepository.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/cache/JedisShiroSessionRepository.java
+END
+JedisManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/cache/JedisManager.java
+END
+VCache.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/cache/VCache.java
+END

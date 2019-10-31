@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/bus/!svn/ver/16/busAward/src/main/webapp/WEB-INF/ftl/user
+END
+stuShow.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/bus/!svn/ver/3/busAward/src/main/webapp/WEB-INF/ftl/user/stuShow.ftl
+END
+resetPwd.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/bus/!svn/ver/12/busAward/src/main/webapp/WEB-INF/ftl/user/resetPwd.ftl
+END
+showNews.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/bus/!svn/ver/15/busAward/src/main/webapp/WEB-INF/ftl/user/showNews.ftl
+END
+new_index.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/bus/!svn/ver/16/busAward/src/main/webapp/WEB-INF/ftl/user/new_index.ftl
+END
+updatePswd.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/bus/!svn/ver/3/busAward/src/main/webapp/WEB-INF/ftl/user/updatePswd.ftl
+END
+index.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/bus/!svn/ver/12/busAward/src/main/webapp/WEB-INF/ftl/user/index.ftl
+END
+login.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/bus/!svn/ver/15/busAward/src/main/webapp/WEB-INF/ftl/user/login.ftl
+END

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/session
+END
+SessionStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/session/SessionStatus.java
+END
+ShiroSessionRepository.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/session/ShiroSessionRepository.java
+END
+CustomSessionManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/session/CustomSessionManager.java
+END

@@ -1,0 +1,139 @@
+package com.zz80z.busAward.common.model;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+
+public class Student {
+    private Integer stuId;
+
+    private String stuNo;
+
+	private String realName;
+
+    private String stuSex;
+
+    private String stuAddress;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date stuBirthday;
+
+    private Integer classId;
+
+    private String stuGroup;
+
+    private String stuClassMark;
+
+    private String reserve;
+    
+    private Classs classs;
+    
+    private List<Score> scores;
+
+    public Student() {
+	}
+
+	public List<Score> getScores() {
+		return scores;
+	}
+
+	public void setScores(List<Score> scores) {
+		this.scores = scores;
+	}
+
+	public Classs getClasss() {
+		return classs;
+	}
+
+	public void setClasss(Classs classs) {
+		this.classs = classs;
+	}
+
+	public Integer getstuId() {
+        return stuId;
+    }
+
+    public void setstuId(Integer stuId) {
+        this.stuId = stuId;
+    }
+
+    public String getstuNo() {
+        return stuNo;
+    }
+
+    public void setstuNo(String stuNo) {
+        this.stuNo = stuNo == null ? null : stuNo.trim();
+    }
+
+    public String getrealName() {
+        return realName;
+    }
+
+    public void setrealName(String realName) {
+        this.realName = realName == null ? null : realName.trim();
+    }
+
+    public String getstuSex() {
+        return stuSex;
+    }
+
+    public void setstuSex(String stuSex) {
+        this.stuSex = stuSex == null ? null : stuSex.trim();
+    }
+
+    public String getstuAddress() {
+        return stuAddress;
+    }
+
+    public void setstuAddress(String stuAddress) {
+        this.stuAddress = stuAddress == null ? null : stuAddress.trim();
+    }
+
+    public Date getstuBirthday() {
+        return stuBirthday;
+    }
+
+    public void setstuBirthday(Date stuBirthday) {
+        this.stuBirthday = stuBirthday;
+    }
+
+    public Integer getclassId() {
+        return classId;
+    }
+
+    public void setclassId(Integer classId) {
+        this.classId = classId;
+    }
+
+    public String getstuGroup() {
+        return stuGroup;
+    }
+
+    public void setstuGroup(String stuGroup) {
+        this.stuGroup = stuGroup == null ? null : stuGroup.trim();
+    }
+
+    public String getstuClassMark() {
+        return stuClassMark;
+    }
+
+    public void setstuClassMark(String stuClassMark) {
+        this.stuClassMark = stuClassMark == null ? null : stuClassMark.trim();
+    }
+
+    public String getReserve() {
+        return reserve;
+    }
+
+    public void setReserve(String reserve) {
+        this.reserve = reserve == null ? null : reserve.trim();
+    }
+    @Override
+	public String toString() {
+		return "Student [stuId=" + stuId + ", stuNo=" + stuNo + ", realName=" + realName + ", stuSex=" + stuSex
+				+ ", stuAddress=" + stuAddress + ", stuBirthday=" + stuBirthday + ", classId=" + classId + ", stuGroup="
+				+ stuGroup + ", stuClassMark=" + stuClassMark + ", reserve=" + reserve + ", classs=" + classs
+				+ ", scores=" + scores + "]";
+	}
+}

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/bus/!svn/ver/10/busAward/src/main/webapp/WEB-INF/ftl/class
+END
+show.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/bus/!svn/ver/3/busAward/src/main/webapp/WEB-INF/ftl/class/show.ftl
+END
+classDay.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/bus/!svn/ver/23/busAward/src/main/webapp/WEB-INF/ftl/class/classDay.ftl
+END
+index.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/bus/!svn/ver/3/busAward/src/main/webapp/WEB-INF/ftl/class/index.ftl
+END
+classChart.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/bus/!svn/ver/19/busAward/src/main/webapp/WEB-INF/ftl/class/classChart.ftl
+END
+classUp.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/bus/!svn/ver/19/busAward/src/main/webapp/WEB-INF/ftl/class/classUp.ftl
+END

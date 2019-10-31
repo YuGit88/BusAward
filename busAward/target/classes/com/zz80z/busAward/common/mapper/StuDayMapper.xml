@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.StuDayMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.StuDay" >
+    <id column="stu_day_id" property="stuDayId" jdbcType="INTEGER" />
+    <result column="stu_id" property="stuId" jdbcType="INTEGER" />
+    <result column="attendance" property="attendance" jdbcType="INTEGER" />
+    <result column="appearance" property="appearance" jdbcType="INTEGER" />
+    <result column="morning" property="morning" jdbcType="INTEGER" />
+    <result column="discipline" property="discipline" jdbcType="INTEGER" />
+    <result column="punishment" property="punishment" jdbcType="INTEGER" />
+    <result column="assembly" property="assembly" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="health" property="health" jdbcType="INTEGER" />
+    <result column="chinese" property="chinese" jdbcType="INTEGER" />
+    <result column="math" property="math" jdbcType="INTEGER" />
+    <result column="english" property="english" jdbcType="INTEGER" />
+    <result column="politics" property="politics" jdbcType="INTEGER" />
+    <result column="history" property="history" jdbcType="INTEGER" />
+    <result column="geography" property="geography" jdbcType="INTEGER" />
+    <result column="physics" property="physics" jdbcType="INTEGER" />
+    <result column="cexercise" property="cexercise" jdbcType="INTEGER" />
+    <result column="chemistry" property="chemistry" jdbcType="INTEGER" />
+    <result column="biology" property="biology" jdbcType="INTEGER" />
+    <result column="day" property="day" jdbcType="DATE" />
+    <result column="reserve" property="reserve" jdbcType="VARCHAR" />
+    <association property="student" column="stu_id" javaType="com.zz80z.busAward.common.model.Student">
+    <id column="stu_id" property="stuId" jdbcType="INTEGER" />
+		<result column="stu_no" property="stuNo" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="stu_sex" property="stuSex" jdbcType="CHAR" />
+		<result column="stu_address" property="stuAddress" jdbcType="VARCHAR" />
+		<result column="stu_birthday" property="stuBirthday" jdbcType="DATE" />
+		<result column="class_id" property="classId" jdbcType="INTEGER" />
+		<result column="stu_group" property="stuGroup" jdbcType="VARCHAR" />
+		<result column="stu_class_mark" property="stuClassMark" jdbcType="VARCHAR" />
+		<result column="reserve" property="reserve" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    stu_day_id, stu_id, attendance, appearance, morning, discipline, punishment, assembly, 
+    flag, health, chinese, math, english, politics, history, geography, physics, chemistry, 
+    biology, day, reserve
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_stu_day
+    where stu_day_id = #{stuDayId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_stu_day
+    where stu_day_id = #{stuDayId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.StuDay" >
+    insert into b_stu_day (stu_day_id, stu_id, attendance, 
+      appearance, morning, discipline, 
+      punishment, assembly, flag, 
+      health, chinese, math, 
+      english, politics, history, 
+      geography, physics,cexercise, chemistry, 
+      biology, day, reserve)
+    values (#{stuDayId,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, #{attendance,jdbcType=INTEGER}, 
+      #{appearance,jdbcType=INTEGER}, #{morning,jdbcType=INTEGER}, #{discipline,jdbcType=INTEGER}, 
+      #{punishment,jdbcType=INTEGER}, #{assembly,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, 
+      #{health,jdbcType=INTEGER}, #{chinese,jdbcType=INTEGER}, #{math,jdbcType=INTEGER}, 
+      #{english,jdbcType=INTEGER}, #{politics,jdbcType=INTEGER}, #{history,jdbcType=INTEGER}, 
+      #{geography,jdbcType=INTEGER}, #{physics,jdbcType=INTEGER},#{cexercise,jdbcType=INTEGER}, #{chemistry,jdbcType=INTEGER}, 
+      #{biology,jdbcType=INTEGER}, #{day,jdbcType=DATE}, #{reserve,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.StuDay" >
+    insert into b_stu_day
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stuDayId != null" >
+        stu_day_id,
+      </if>
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="attendance != null" >
+        attendance,
+      </if>
+      <if test="appearance != null" >
+        appearance,
+      </if>
+      <if test="morning != null" >
+        morning,
+      </if>
+      <if test="discipline != null" >
+        discipline,
+      </if>
+      <if test="punishment != null" >
+        punishment,
+      </if>
+      <if test="assembly != null" >
+        assembly,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="health != null" >
+        health,
+      </if>
+      <if test="chinese != null" >
+        chinese,
+      </if>
+      <if test="math != null" >
+        math,
+      </if>
+      <if test="english != null" >
+        english,
+      </if>
+      <if test="politics != null" >
+        politics,
+      </if>
+      <if test="history != null" >
+        history,
+      </if>
+      <if test="geography != null" >
+        geography,
+      </if>
+      <if test="physics != null" >
+        physics,
+      </if>
+      <if test="chemistry != null" >
+        chemistry,
+      </if>
+      <if test="biology != null" >
+        biology,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+      <if test="reserve != null" >
+        reserve,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stuDayId != null" >
+        #{stuDayId,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null" >
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="attendance != null" >
+        #{attendance,jdbcType=INTEGER},
+      </if>
+      <if test="appearance != null" >
+        #{appearance,jdbcType=INTEGER},
+      </if>
+      <if test="morning != null" >
+        #{morning,jdbcType=INTEGER},
+      </if>
+      <if test="discipline != null" >
+        #{discipline,jdbcType=INTEGER},
+      </if>
+      <if test="punishment != null" >
+        #{punishment,jdbcType=INTEGER},
+      </if>
+      <if test="assembly != null" >
+        #{assembly,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="health != null" >
+        #{health,jdbcType=INTEGER},
+      </if>
+      <if test="chinese != null" >
+        #{chinese,jdbcType=INTEGER},
+      </if>
+      <if test="math != null" >
+        #{math,jdbcType=INTEGER},
+      </if>
+      <if test="english != null" >
+        #{english,jdbcType=INTEGER},
+      </if>
+      <if test="politics != null" >
+        #{politics,jdbcType=INTEGER},
+      </if>
+      <if test="history != null" >
+        #{history,jdbcType=INTEGER},
+      </if>
+      <if test="geography != null" >
+        #{geography,jdbcType=INTEGER},
+      </if>
+      <if test="physics != null" >
+        #{physics,jdbcType=INTEGER},
+      </if>
+      <if test="chemistry != null" >
+        #{chemistry,jdbcType=INTEGER},
+      </if>
+      <if test="biology != null" >
+        #{biology,jdbcType=INTEGER},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=DATE},
+      </if>
+      <if test="reserve != null" >
+        #{reserve,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.StuDay" >
+    update b_stu_day
+    <set >
+      <if test="stuId != null" >
+        stu_id = #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="attendance != null" >
+        attendance = #{attendance,jdbcType=INTEGER},
+      </if>
+      <if test="appearance != null" >
+        appearance = #{appearance,jdbcType=INTEGER},
+      </if>
+      <if test="morning != null" >
+        morning = #{morning,jdbcType=INTEGER},
+      </if>
+      <if test="discipline != null" >
+        discipline = #{discipline,jdbcType=INTEGER},
+      </if>
+      <if test="punishment != null" >
+        punishment = #{punishment,jdbcType=INTEGER},
+      </if>
+      <if test="assembly != null" >
+        assembly = #{assembly,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="health != null" >
+        health = #{health,jdbcType=INTEGER},
+      </if>
+      <if test="chinese != null" >
+        chinese = #{chinese,jdbcType=INTEGER},
+      </if>
+      <if test="math != null" >
+        math = #{math,jdbcType=INTEGER},
+      </if>
+      <if test="english != null" >
+        english = #{english,jdbcType=INTEGER},
+      </if>
+      <if test="politics != null" >
+        politics = #{politics,jdbcType=INTEGER},
+      </if>
+      <if test="history != null" >
+        history = #{history,jdbcType=INTEGER},
+      </if>
+      <if test="geography != null" >
+        geography = #{geography,jdbcType=INTEGER},
+      </if>
+      <if test="physics != null" >
+        physics = #{physics,jdbcType=INTEGER},
+      </if>
+      <if test="chemistry != null" >
+        chemistry = #{chemistry,jdbcType=INTEGER},
+      </if>
+      <if test="biology != null" >
+        biology = #{biology,jdbcType=INTEGER},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=DATE},
+      </if>
+      <if test="reserve != null" >
+        reserve = #{reserve,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where stu_day_id = #{stuDayId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.StuDay" >
+    update b_stu_day
+    set stu_id = #{stuId,jdbcType=INTEGER},
+      attendance = #{attendance,jdbcType=INTEGER},
+      appearance = #{appearance,jdbcType=INTEGER},
+      morning = #{morning,jdbcType=INTEGER},
+      discipline = #{discipline,jdbcType=INTEGER},
+      punishment = #{punishment,jdbcType=INTEGER},
+      assembly = #{assembly,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=INTEGER},
+      health = #{health,jdbcType=INTEGER},
+      chinese = #{chinese,jdbcType=INTEGER},
+      math = #{math,jdbcType=INTEGER},
+      english = #{english,jdbcType=INTEGER},
+      politics = #{politics,jdbcType=INTEGER},
+      history = #{history,jdbcType=INTEGER},
+      geography = #{geography,jdbcType=INTEGER},
+      physics = #{physics,jdbcType=INTEGER},
+      chemistry = #{chemistry,jdbcType=INTEGER},
+      biology = #{biology,jdbcType=INTEGER},
+      day = #{day,jdbcType=DATE},
+      reserve = #{reserve,jdbcType=VARCHAR}
+    where stu_day_id = #{stuDayId,jdbcType=INTEGER}
+  </update>
+  <insert id="insertStuDayList" parameterType="java.util.List">
+      insert into b_stu_day ( stu_id, attendance, 
+      appearance, morning, discipline, 
+      punishment, assembly, flag, 
+      health, chinese, math, 
+      english, politics, history, 
+      geography, physics,cexercise, chemistry, 
+      biology, day)
+    values
+    <foreach collection="list" item="item" open="" separator=",">  
+ ( #{item.stuId,jdbcType=INTEGER}, #{item.attendance,jdbcType=INTEGER}, 
+      #{item.appearance,jdbcType=INTEGER}, #{item.morning,jdbcType=INTEGER}, #{item.discipline,jdbcType=INTEGER}, 
+      #{item.punishment,jdbcType=INTEGER}, #{item.assembly,jdbcType=INTEGER}, #{item.flag,jdbcType=INTEGER}, 
+      #{item.health,jdbcType=INTEGER}, #{item.chinese,jdbcType=INTEGER}, #{item.math,jdbcType=INTEGER}, 
+      #{item.english,jdbcType=INTEGER}, #{item.politics,jdbcType=INTEGER}, #{item.history,jdbcType=INTEGER}, 
+      #{item.geography,jdbcType=INTEGER}, #{item.physics,jdbcType=INTEGER},#{item.cexercise,jdbcType=INTEGER}, #{item.chemistry,jdbcType=INTEGER}, 
+      #{item.biology,jdbcType=INTEGER}, #{item.day,jdbcType=DATE})
+  </foreach>
+  </insert>
+  
+  <select id="countLastWeekStuDay" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select 
+			bs.*,
+			SUM(attendance) as attendance,
+			SUM(appearance) as appearance,
+			SUM(morning) as morning,
+			SUM(discipline) as discipline,
+			SUM(punishment) as punishment,
+			SUM(assembly) as assembly,
+			SUM(flag) as flag,
+			SUM(health) as health,
+			SUM(chinese) as chinese,
+			SUM(math) as math,
+			SUM(english) as english,
+			SUM(politics) as politics,
+			SUM(history) as history,
+			SUM(geography) as geography,
+			SUM(physics) as physics,
+			SUM(cexercise) as cexercise,
+			SUM(chemistry) as chemistry,
+			SUM(biology) as biology
+			from b_stu_day bd,b_student bs 
+			where bd.stu_id=bs.stu_id 
+			and bs.stu_class_mark=#{classMark}
+			and  bd.day BETWEEN #{beginTime} 
+			and #{endTime} and bs.reserve=1 GROUP  BY bd.stu_id
+  </select>
+  
+  <select id="semesterList" resultType="com.zz80z.busAward.common.model.Semester">
+  select * from b_semester
+  </select>
+
+	<select id="selectBrcord" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.Student">
+	select * from b_student where stu_id in(select stu_id from b_record br where br.week=#{week} and br.description=#{description} and stu_id in
+	 <foreach collection="stuId" open="(" close=")" separator="," item="id">
+        #{id}
+    </foreach> 
+    )
+	</select>
+	
+	<select id="selectBrcordList" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.BRecord">
+		select * from b_record where week=#{week} and description=#{description}
+	</select>
+	
+	
+</mapper>

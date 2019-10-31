@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.CoinMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.Coin" >
+    <id column="coin_id" property="coinId" jdbcType="INTEGER" />
+    <result column="stu_id" property="stuId" jdbcType="INTEGER" />
+    <result column="team_coin" property="teamCoin" jdbcType="INTEGER" />
+    <result column="level_coin" property="levelCoin" jdbcType="INTEGER" />
+    <result column="flexible_coin" property="flexibleCoin" jdbcType="INTEGER" />
+    <result column="first_coin" property="firstCoin" jdbcType="INTEGER" />
+    <result column="promote_coin" property="promoteCoin" jdbcType="INTEGER" />
+    <result column="advan_coin" property="advanCoin" jdbcType="INTEGER" />
+    <result column="activity_coin" property="activityCoin" jdbcType="INTEGER" />
+    <result column="reserve" property="reserve" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    coin_id, stu_id, team_coin, level_coin, flexible_coin, first_coin, promote_coin, 
+    advan_coin, activity_coin, reserve
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_coin
+    where coin_id = #{coinId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_coin
+    where coin_id = #{coinId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.Coin" >
+    insert into b_coin (coin_id, stu_id, team_coin, 
+      level_coin, flexible_coin, first_coin, 
+      promote_coin, advan_coin, activity_coin, 
+      reserve)
+    values (#{coinId,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, #{teamCoin,jdbcType=INTEGER}, 
+      #{levelCoin,jdbcType=INTEGER}, #{flexibleCoin,jdbcType=INTEGER}, #{firstCoin,jdbcType=INTEGER}, 
+      #{promoteCoin,jdbcType=INTEGER}, #{advanCoin,jdbcType=INTEGER}, #{activityCoin,jdbcType=INTEGER}, 
+      #{reserve,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.Coin" >
+    insert into b_coin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="coinId != null" >
+        coin_id,
+      </if>
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="teamCoin != null" >
+        team_coin,
+      </if>
+      <if test="levelCoin != null" >
+        level_coin,
+      </if>
+      <if test="flexibleCoin != null" >
+        flexible_coin,
+      </if>
+      <if test="firstCoin != null" >
+        first_coin,
+      </if>
+      <if test="promoteCoin != null" >
+        promote_coin,
+      </if>
+      <if test="advanCoin != null" >
+        advan_coin,
+      </if>
+      <if test="activityCoin != null" >
+        activity_coin,
+      </if>
+      <if test="reserve != null" >
+        reserve,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="coinId != null" >
+        #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null" >
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="teamCoin != null" >
+        #{teamCoin,jdbcType=INTEGER},
+      </if>
+      <if test="levelCoin != null" >
+        #{levelCoin,jdbcType=INTEGER},
+      </if>
+      <if test="flexibleCoin != null" >
+        #{flexibleCoin,jdbcType=INTEGER},
+      </if>
+      <if test="firstCoin != null" >
+        #{firstCoin,jdbcType=INTEGER},
+      </if>
+      <if test="promoteCoin != null" >
+        #{promoteCoin,jdbcType=INTEGER},
+      </if>
+      <if test="advanCoin != null" >
+        #{advanCoin,jdbcType=INTEGER},
+      </if>
+      <if test="activityCoin != null" >
+        #{activityCoin,jdbcType=INTEGER},
+      </if>
+      <if test="reserve != null" >
+        #{reserve,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.Coin" >
+    update b_coin
+    <set >
+      <if test="stuId != null" >
+        stu_id = #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="teamCoin != null" >
+        team_coin = #{teamCoin,jdbcType=INTEGER},
+      </if>
+      <if test="levelCoin != null" >
+        level_coin = #{levelCoin,jdbcType=INTEGER},
+      </if>
+      <if test="flexibleCoin != null" >
+        flexible_coin = #{flexibleCoin,jdbcType=INTEGER},
+      </if>
+      <if test="firstCoin != null" >
+        first_coin = #{firstCoin,jdbcType=INTEGER},
+      </if>
+      <if test="promoteCoin != null" >
+        promote_coin = #{promoteCoin,jdbcType=INTEGER},
+      </if>
+      <if test="advanCoin != null" >
+        advan_coin = #{advanCoin,jdbcType=INTEGER},
+      </if>
+      <if test="activityCoin != null" >
+        activity_coin = #{activityCoin,jdbcType=INTEGER},
+      </if>
+      <if test="reserve != null" >
+        reserve = #{reserve,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where coin_id = #{coinId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.Coin" >
+    update b_coin
+    set stu_id = #{stuId,jdbcType=INTEGER},
+      team_coin = #{teamCoin,jdbcType=INTEGER},
+      level_coin = #{levelCoin,jdbcType=INTEGER},
+      flexible_coin = #{flexibleCoin,jdbcType=INTEGER},
+      first_coin = #{firstCoin,jdbcType=INTEGER},
+      promote_coin = #{promoteCoin,jdbcType=INTEGER},
+      advan_coin = #{advanCoin,jdbcType=INTEGER},
+      activity_coin = #{activityCoin,jdbcType=INTEGER},
+      reserve = #{reserve,jdbcType=VARCHAR}
+    where coin_id = #{coinId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="lastWeekAdvancedGroup" parameterType="java.util.Map" resultType="com.zz80z.busAward.user.bo.StudentAdvancedGroup">
+				select * FROM 
+		(select *, 
+		CASE
+		WHEN @rowtotal = countstuday.total THEN
+		    @rank
+		WHEN @rowtotal := countstuday.total THEN
+		    @rank :=@rank + 1
+		WHEN @rowtotal = 0 THEN
+		    @rank :=@rank + 1
+		END AS rank from (
+		select 
+		bc.grade_name,bc.class_name,bt.stu_class_mark,bt.stu_group,(
+		(SUM(attendance)/count(*))+
+		(SUM(appearance)/count(*))+
+		(SUM(morning)/count(*))+
+		(SUM(discipline)/count(*))+
+		(SUM(punishment)/count(*))+
+		(SUM(assembly)/count(*))+
+		(SUM(flag)/count(*))+
+		(SUM(health)/count(*))+
+		(SUM(flag)/count(*))+
+		(SUM(chinese)/count(*))+
+		(SUM(math)/count(*))+
+		(SUM(english)/count(*))+
+		(SUM(politics)/count(*))+
+		(SUM(history)/count(*))+
+		(SUM(geography)/count(*))+
+		(SUM(physics)/count(*))+
+		(SUM(cexercise)/count(*))+
+		(SUM(chemistry)/count(*))+
+		(SUM(biology)/count(*))) as total
+		from b_stu_day bs,b_student bt,b_class bc,(SELECT @rank := 0 ,@rowtotal := NULL) r
+		where bs.stu_id=bt.stu_id and bc.class_id=bt.class_id and bs.day BETWEEN #{beginTime} and #{endTime}  and bt.class_id=#{classMark}
+		and bt.reserve=1
+		GROUP BY bt.stu_group,bt.stu_class_mark 
+		order by bt.stu_class_mark,total desc 
+		) as countstuday ) as rank where rank.rank<![CDATA[<= ]]>2		
+  </select>
+  
+  <select id="advancedGroupStudent" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.Student">
+  select stu_id from b_student 
+  where stu_group in 
+   <foreach collection="groupname" open="(" close=")" separator="," item="items">
+        #{items}
+    </foreach> 
+  and class_id=#{classMark}
+  </select>
+  
+  <insert id="insertFromCoin" parameterType="java.util.List">
+    insert into b_coin (stu_id,team_coin,level_coin,flexible_coin,first_coin, 
+      promote_coin,advan_coin,activity_coin) 
+       values
+      <foreach collection="list" item="item" open="" separator="," >  
+     (#{item.stuId},#{item.teamCoin},#{item.levelCoin},#{item.flexibleCoin},#{item.firstCoin},#{item.promoteCoin}
+    	,#{item.advanCoin},#{item.activityCoin}
+    	)
+       </foreach>
+  </insert>
+  
+    <insert id="insertFromBRecord" parameterType="java.util.List">
+      insert into b_record (stu_id, points, 
+      coin_type,week, create_time,description)
+       values
+      <foreach collection="list" item="item" open="" separator=",">  
+      (#{item.stuId},#{item.points},
+      #{item.coinType},#{item.week},#{item.createTime},#{item.description})
+       </foreach>
+  </insert>
+  
+  <select id="selectRecord" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.BRecord">
+  select  br.* from  b_record br,b_student bs 
+  where br.stu_id=bs.stu_id 
+  and br.week=#{nWeek} 
+  and bs.class_id=#{classMark} 
+  and br.description=#{description}
+  </select>
+  
+  <select id="selectLastRank" parameterType="java.util.Map" resultType="com.zz80z.busAward.user.bo.StudentAdvancedGroup">
+select thiscountstuday.stu_class_mark,thiscountstuday.grade_name,thiscountstuday.class_name,thiscountstuday.stu_group,thiscountstuday.total,max(thiscountstuday.total-lastcountstuday.total)as advancedscore from 
+(
+select 
+bc.stu_class_mark,bc.grade_name,bc.class_name,bs.stu_group,
+((SUM(attendance)+
+SUM(appearance)+
+SUM(morning)+
+SUM(discipline)+
+SUM(punishment)+
+SUM(assembly)+
+SUM(flag)+
+SUM(health)+
+SUM(chinese)+
+SUM(math)+
+SUM(english)+
+SUM(politics)+
+SUM(history)+
+SUM(geography)+
+SUM(physics)+
+SUM(cexercise)+
+SUM(chemistry)+
+SUM(biology))/COUNT(*)) as total from b_stu_day bd 
+left join b_student bs on bd.stu_id=bs.stu_id and day BETWEEN #{lastBeginDate} and #{lastEndDate}
+left join b_class bc on bs.stu_class_mark=bc.stu_class_mark where bs.class_id=#{classMark} and bs.reserve=1
+ group by bs.stu_group ORDER BY total desc) as lastcountstuday,
+(
+select 
+bc.stu_class_mark,bc.grade_name,bc.class_name,bs.stu_group,
+((SUM(attendance)+
+SUM(appearance)+
+SUM(morning)+
+SUM(discipline)+
+SUM(punishment)+
+SUM(assembly)+
+SUM(flag)+
+SUM(health)+
+SUM(chinese)+
+SUM(math)+
+SUM(english)+
+SUM(politics)+
+SUM(history)+
+SUM(geography)+
+SUM(physics)+
+SUM(cexercise)+
+SUM(chemistry)+
+SUM(biology))/COUNT(*)) as total from b_stu_day bd 
+left join b_student bs on bd.stu_id=bs.stu_id and day BETWEEN #{thisBeginDate} and #{thisEndDate}
+left join b_class bc on bs.stu_class_mark=bc.stu_class_mark where bs.class_id=#{classMark} and bs.reserve=1
+group by bs.stu_group ORDER BY total desc) as thiscountstuday 
+  </select>
+  
+  <select id="selectStudentByGroup" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.Student">
+  select * from b_student where stu_group=#{group} and class_id=#{classMark}
+  </select>
+  
+	<select id="selectAward" resultType="com.zz80z.busAward.common.model.Award">
+	select * from b_award
+	</select>
+	
+	<select id="selectLastStuDayRank" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.LastRank">
+	select * FROM 
+		(select *, 
+		CASE
+		WHEN @rowtotal = countstuday.total THEN
+		    @rank
+		WHEN @rowtotal := countstuday.total THEN
+		    @rank :=@rank + 1
+		WHEN @rowtotal = 0 THEN
+		    @rank :=@rank + 1
+		END AS rank from (
+		select 
+		bc.grade_name,bc.class_name,bt.stu_class_mark,bt.stu_group,(
+		(SUM(attendance)/count(*))+
+		(SUM(appearance)/count(*))+
+		(SUM(morning)/count(*))+
+		(SUM(discipline)/count(*))+
+		(SUM(punishment)/count(*))+
+		(SUM(assembly)/count(*))+
+		(SUM(flag)/count(*))+
+		(SUM(health)/count(*))+
+		(SUM(flag)/count(*))+
+		(SUM(chinese)/count(*))+
+		(SUM(math)/count(*))+
+		(SUM(english)/count(*))+
+		(SUM(politics)/count(*))+
+		(SUM(history)/count(*))+
+		(SUM(geography)/count(*))+
+		(SUM(physics)/count(*))+
+		(SUM(cexercise)/count(*))+ 
+		(SUM(chemistry)/count(*))+
+		(SUM(biology)/count(*))) as total
+		from b_stu_day bs,b_student bt,b_class bc,(SELECT @rank := 0 ,@rowtotal := NULL) r
+		where bs.stu_id=bt.stu_id and bc.stu_class_mark=bt.stu_class_mark and bs.day BETWEEN #{lastBeginDate} and #{lastEndDate}  and bt.stu_class_mark=#{classMark}
+		GROUP BY bt.stu_group,bt.stu_class_mark 
+		order by bt.stu_class_mark,total desc 
+		) as countstuday ) as rank 
+	</select>
+	
+	<select id="selectAdvancedClass" parameterType="java.util.Map" resultType="com.zz80z.busAward.user.bo.ClassWeekAdvanced">
+		select * from (
+	select *, 
+			CASE
+			WHEN @rowtotal = countTotal.total THEN
+			    @rank
+			WHEN @rowtotal := countTotal.total THEN
+			    @rank :=@rank + 1
+			WHEN @rowtotal = 0 THEN
+			    @rank :=@rank + 1
+			END AS rank from (select class_name,class_mark,bd.class_id,bc.grade_name,(SUM(discipline)+SUM(health)) total from b_class_day bd LEFT JOIN b_class bc 
+	on bd.class_id=bc.class_id,(SELECT @rank := 0 ,@rowtotal := NULL) r
+	where bc.grade_name=#{gradeName} and day BETWEEN #{beginTime} and #{endTime} 
+	 and bc.reserve=1
+	 group by bd.class_id ORDER BY total desc) as countTotal
+	) as ranks  where 
+	<if test="gradeName==2">
+	rank<![CDATA[<]]> 3
+	</if>
+	<if test="gradeName==1||gradeName==3">
+	rank<![CDATA[<]]> 4
+	</if>
+	</select>
+	
+	<select id="selectStudentByClassMark" parameterType="String" resultType="com.zz80z.busAward.common.model.Student">
+	select * from b_student where stu_class_mark in 
+	<foreach collection="array" item="item" open="(" separator="," close=")">
+	#{item}
+	</foreach>
+	</select>
+	
+		<select id="selectBrecordByStuIds" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.Student">
+		select * from b_record where stu_id in 
+		
+		<foreach collection="stuIds" item="item" open="(" separator="," close=")">
+		#{item}
+		</foreach>
+		
+		and coin_type=#{coinType} and week=#{nWeek}
+		</select>
+
+</mapper>

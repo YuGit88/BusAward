@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/bus/!svn/ver/16/busAward/src/main/java/com/zz80z/busAward/score/controller
+END
+ScoreController.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/bus/!svn/ver/15/busAward/src/main/java/com/zz80z/busAward/score/controller/ScoreController.java
+END
+ScoreShowController.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bus/!svn/ver/16/busAward/src/main/java/com/zz80z/busAward/score/controller/ScoreShowController.java
+END
+ProgressCountController.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/bus/!svn/ver/16/busAward/src/main/java/com/zz80z/busAward/score/controller/ProgressCountController.java
+END
+ScoreAllotCoinController.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/bus/!svn/ver/15/busAward/src/main/java/com/zz80z/busAward/score/controller/ScoreAllotCoinController.java
+END
+RankCountController.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bus/!svn/ver/16/busAward/src/main/java/com/zz80z/busAward/score/controller/RankCountController.java
+END
+EveryScoreController.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/bus/!svn/ver/16/busAward/src/main/java/com/zz80z/busAward/score/controller/EveryScoreController.java
+END
+EveryGroupController.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/bus/!svn/ver/16/busAward/src/main/java/com/zz80z/busAward/score/controller/EveryGroupController.java
+END

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.ClassWeekMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.ClassWeek" >
+    <id column="classweek_id" property="classweekId" jdbcType="INTEGER" />
+    <result column="class_mark" property="classMark" jdbcType="VARCHAR" />
+    <result column="week" property="week" jdbcType="VARCHAR" />
+    <result column="discipline" property="discipline" jdbcType="INTEGER" />
+    <result column="health" property="health" jdbcType="INTEGER" />
+    <result column="reserve" property="reserve" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    classweek_id, class_mark, week, discipline, health, reserve
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_class_week
+    where classweek_id = #{classweekId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_class_week
+    where classweek_id = #{classweekId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.ClassWeek" >
+    insert into b_class_week (classweek_id, class_mark, week, 
+      discipline, health, reserve
+      )
+    values (#{classweekId,jdbcType=INTEGER}, #{classMark,jdbcType=VARCHAR}, #{week,jdbcType=VARCHAR}, 
+      #{discipline,jdbcType=INTEGER}, #{health,jdbcType=INTEGER}, #{reserve,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.ClassWeek" >
+    insert into b_class_week
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classweekId != null" >
+        classweek_id,
+      </if>
+      <if test="classMark != null" >
+        class_mark,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+      <if test="discipline != null" >
+        discipline,
+      </if>
+      <if test="health != null" >
+        health,
+      </if>
+      <if test="reserve != null" >
+        reserve,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classweekId != null" >
+        #{classweekId,jdbcType=INTEGER},
+      </if>
+      <if test="classMark != null" >
+        #{classMark,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null" >
+        #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="discipline != null" >
+        #{discipline,jdbcType=INTEGER},
+      </if>
+      <if test="health != null" >
+        #{health,jdbcType=INTEGER},
+      </if>
+      <if test="reserve != null" >
+        #{reserve,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.ClassWeek" >
+    update b_class_week
+    <set >
+      <if test="classMark != null" >
+        class_mark = #{classMark,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null" >
+        week = #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="discipline != null" >
+        discipline = #{discipline,jdbcType=INTEGER},
+      </if>
+      <if test="health != null" >
+        health = #{health,jdbcType=INTEGER},
+      </if>
+      <if test="reserve != null" >
+        reserve = #{reserve,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where classweek_id = #{classweekId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.ClassWeek" >
+    update b_class_week
+    set class_mark = #{classMark,jdbcType=VARCHAR},
+      week = #{week,jdbcType=VARCHAR},
+      discipline = #{discipline,jdbcType=INTEGER},
+      health = #{health,jdbcType=INTEGER},
+      reserve = #{reserve,jdbcType=VARCHAR}
+    where classweek_id = #{classweekId,jdbcType=INTEGER}
+  </update>
+</mapper>

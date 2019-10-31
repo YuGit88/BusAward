@@ -1,0 +1,173 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/bus/!svn/ver/16/busAward/src/main/java/com/zz80z/busAward/common/mapper
+END
+ClassInformationMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/common/mapper/ClassInformationMapper.xml
+END
+ScoreMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bus/!svn/ver/16/busAward/src/main/java/com/zz80z/busAward/common/mapper/ScoreMapper.xml
+END
+TeacherMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bus/!svn/ver/12/busAward/src/main/java/com/zz80z/busAward/common/mapper/TeacherMapper.xml
+END
+NewsMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/bus/!svn/ver/13/busAward/src/main/java/com/zz80z/busAward/common/mapper/NewsMapper.xml
+END
+UserMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/bus/!svn/ver/12/busAward/src/main/java/com/zz80z/busAward/common/mapper/UserMapper.xml
+END
+LastRankMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/common/mapper/LastRankMapper.xml
+END
+BRecordMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/common/mapper/BRecordMapper.xml
+END
+ClassWeekMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/common/mapper/ClassWeekMapper.xml
+END
+GradeMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bus/!svn/ver/12/busAward/src/main/java/com/zz80z/busAward/common/mapper/GradeMapper.xml
+END
+CommentsMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/common/mapper/CommentsMapper.xml
+END
+StudentMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bus/!svn/ver/23/busAward/src/main/java/com/zz80z/busAward/common/mapper/StudentMapper.xml
+END
+SemesterMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/bus/!svn/ver/15/busAward/src/main/java/com/zz80z/busAward/common/mapper/SemesterMapper.xml
+END
+StuWeekMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/common/mapper/StuWeekMapper.xml
+END
+PermissionMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/common/mapper/PermissionMapper.xml
+END
+CoinMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/bus/!svn/ver/19/busAward/src/main/java/com/zz80z/busAward/common/mapper/CoinMapper.xml
+END
+ClasssMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bus/!svn/ver/23/busAward/src/main/java/com/zz80z/busAward/common/mapper/ClasssMapper.xml
+END
+IssueMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bus/!svn/ver/12/busAward/src/main/java/com/zz80z/busAward/common/mapper/IssueMapper.xml
+END
+QuesstionMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/bus/!svn/ver/8/busAward/src/main/java/com/zz80z/busAward/common/mapper/QuesstionMapper.xml
+END
+RankMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/bus/!svn/ver/15/busAward/src/main/java/com/zz80z/busAward/common/mapper/RankMapper.xml
+END
+AwardMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/common/mapper/AwardMapper.xml
+END
+SubjectMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bus/!svn/ver/4/busAward/src/main/java/com/zz80z/busAward/common/mapper/SubjectMapper.xml
+END
+UserRoleMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/common/mapper/UserRoleMapper.xml
+END
+RoleMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/common/mapper/RoleMapper.xml
+END
+ClassTeacherMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bus/!svn/ver/6/busAward/src/main/java/com/zz80z/busAward/common/mapper/ClassTeacherMapper.xml
+END
+GradeSubjectMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bus/!svn/ver/4/busAward/src/main/java/com/zz80z/busAward/common/mapper/GradeSubjectMapper.xml
+END
+ClassDayMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/bus/!svn/ver/23/busAward/src/main/java/com/zz80z/busAward/common/mapper/ClassDayMapper.xml
+END
+StuDayMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bus/!svn/ver/17/busAward/src/main/java/com/zz80z/busAward/common/mapper/StuDayMapper.xml
+END
+RolePermissionMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/common/mapper/RolePermissionMapper.xml
+END

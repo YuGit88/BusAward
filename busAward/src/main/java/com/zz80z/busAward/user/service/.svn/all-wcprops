@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/bus/!svn/ver/12/busAward/src/main/java/com/zz80z/busAward/user/service
+END
+UserService.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bus/!svn/ver/12/busAward/src/main/java/com/zz80z/busAward/user/service/UserService.java
+END
+RoleService.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/user/service/RoleService.java
+END
+PermissionService.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/user/service/PermissionService.java
+END

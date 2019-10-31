@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.RoleMapper">
+	<resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.Role">
+		<id column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="limit_sql">
+		<if test="page_sql != null and page_sql != ''">
+			${page_sql}
+		</if>
+	</sql>
+	<sql id="where_all">
+		<where>
+			<if test="findContent != null and findContent !='' ">
+				and (
+				LOWER(role_name) like CONCAT("%",#{findContent,jdbcType=VARCHAR},"%")
+				)
+			</if>
+		</where>
+	</sql>
+
+	<select id="findRoleByUserId" resultType="java.lang.String">
+		select r.role_name from b_role r,b_user_role ur where ur.role_id = r.role_id and ur.user_id =
+		#{id,jdbcType=BIGINT}
+	</select>
+	<!-- 普通的分页查询 -->
+	<select id="findAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from b_role
+		<include refid="where_all" />
+		<include refid="limit_sql" />
+	</select>
+	<select id="findCount" resultMap="BaseResultMap">
+		select count(role_id) from b_role
+		<include refid="where_all" />
+	</select>
+
+	<!-- 选择角色给用户 ，checkbox 列表 -->
+	<select id="selectRoleByUserId" resultType="com.zz80z.busAward.user.bo.RoleBo">
+		<!-- select ur.id,ur.name,ur.type,ifnull(uu.id,0)marker from u_role ur 
+			left join u_user_role uur on uur.uid = ur.id left join (select id from u_user 
+			where id =#{id,jdbcType=BIGINT}) uu on uu.id = uur.uid group by ur.id -->
+		select ur.role_id,ur.role_name,ifnull(uur.user_id,0) marker
+		from b_role ur
+		left join(select * from b_user_role where user_id=#{id,jdbcType=BIGINT})
+		uur on uur.role_id = ur.role_id
+	</select>
+
+	<!-- 权限分配的分页查询 -->
+	<select id="findRoleAndPermission" resultType="com.zz80z.busAward.user.bo.RolePermissionAllocationBo">
+		select ur.role_id,ur.role_name,group_concat(up.permission_name)
+		permissionNames,group_concat(up.permission_id)permissionIds
+		from  b_role ur
+		left join b_role_permission urp on urp.role_id = ur.role_id
+		left join b_permission up on up.permission_id = urp.permission_id
+		<where>
+			<if test="findContent != null and findContent !='' ">
+				and (
+				LOWER(ur.role_name) like CONCAT("%",#{findContent,jdbcType=VARCHAR},"%") 
+				)
+			</if>
+		</where>
+		group by ur.role_id
+		<include refid="limit_sql" />
+	</select>
+
+	<!-- Mybatis 一对多 Demo begin -->
+
+	<!-- 查询用户全部的role & permission -->
+	<resultMap id="findNowAllPermission_resultMap" extends="BaseResultMap" type="com.zz80z.busAward.common.model.Role">
+		<collection property="permissions" javaType="com.zz80z.busAward.common.model.Permission">
+			<id column="permission_id" property="permissionId" jdbcType="INTEGER" />
+		<result column="permission_name" property="permissionName" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	<!-- 根据用户ID，查询所有权限 -->
+	<select id="findNowAllPermission" resultMap="findNowAllPermission_resultMap">
+		select ur.role_id,ur.role_name,up.permission_id pid,up.url,up.permission_name pname
+		from (select role_id from b_user_role where user_id = #{userId,jdbcType=BIGINT})
+		uur
+		left join b_role ur on uur.role_id = ur.role_id
+		left join b_role_permission urp on
+		urp.role_id = ur.role_id
+		left join b_permission up on up.permission_id = urp.permission_id
+	</select>
+	<!-- Mybatis 一对多 Demo end -->
+
+
+	<sql id="Base_Column_List">
+		role_id, role_name
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from b_role
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from b_role
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zz80z.busAward.common.model.Role">
+		insert into b_role (role_id, role_name)
+		values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.Role">
+		insert into b_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="roleName != null">
+				role_name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				#{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="roleName != null">
+				#{roleName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.Role">
+		update b_role
+		<set>
+			<if test="roleName != null">
+				role_name = #{roleName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.Role">
+		update b_role
+		set role_name = #{roleName,jdbcType=VARCHAR}
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</update>
+</mapper>

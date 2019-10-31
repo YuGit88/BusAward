@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.RolePermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.RolePermission" >
+    <result column="permission_id" property="permissionId" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    permission_id, role_id
+  </sql>
+  <!-- 根据权限ID查找 -->
+  <select id="findRolePermissionByPid" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/>
+  	from b_role_permission
+  	where permission_id =  #{permissionId,jdbcType=BIGINT}
+  </select> 
+  <!-- 根据角色ID查找 -->
+  <select id="findRolePermissionByRid" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/>
+  	from b_role_permission
+  	where role_id =  #{roleId,jdbcType=BIGINT}
+  </select> 
+  <!-- 根据权限 && 角色ID查找 -->
+  <select id="find" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/>
+  	from b_role_permission
+  	where permission_id =  #{permissionId,jdbcType=BIGINT}
+  	and  role_id =  #{roleId,jdbcType=BIGINT}
+  </select> 
+  <!-- 根据权限ID删除-->
+  <delete id="deleteByPid">
+  	delete from b_role_permission where permission_id =  #{permissionId,jdbcType=BIGINT}
+  </delete>
+   <!-- 根据角色ID删除-->
+  <delete id="deleteByRid">
+  	delete from b_role_permission where role_id =  #{roleId,jdbcType=BIGINT}
+  </delete>
+  <!-- 根据角色ID && 权限ID删除-->
+  <delete id="delete">
+  	delete from b_role_permission where role_id =  #{roleId,jdbcType=BIGINT}
+  	and  permission_id =  #{permissionId,jdbcType=BIGINT}
+  </delete>
+  <!-- 根据角色IDs删除-->
+  <delete id="deleteByRids">
+  	delete from b_role_permission where role_id in(#{roleIds,jdbcType=VARCHAR})
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.RolePermission" >
+    insert into b_role_permission (permission_id, role_id)
+    values (#{permissionId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.RolePermission" >
+    insert into b_role_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        permission_id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        #{permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

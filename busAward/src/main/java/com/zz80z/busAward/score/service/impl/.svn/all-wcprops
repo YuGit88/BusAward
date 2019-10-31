@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/bus/!svn/ver/16/busAward/src/main/java/com/zz80z/busAward/score/service/impl
+END
+RecordServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/score/service/impl/RecordServiceImpl.java
+END
+SubjectServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bus/!svn/ver/4/busAward/src/main/java/com/zz80z/busAward/score/service/impl/SubjectServiceImpl.java
+END
+ScoreServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/bus/!svn/ver/16/busAward/src/main/java/com/zz80z/busAward/score/service/impl/ScoreServiceImpl.java
+END
+RankServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/bus/!svn/ver/15/busAward/src/main/java/com/zz80z/busAward/score/service/impl/RankServiceImpl.java
+END

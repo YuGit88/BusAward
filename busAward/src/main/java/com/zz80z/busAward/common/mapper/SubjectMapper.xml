@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.SubjectMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.Subject" >
+    <id column="subject_id" property="subjectId" jdbcType="INTEGER" />
+    <result column="subject_name" property="subjectName" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    subject_id, subject_name, remark
+  </sql>
+  
+  <!-- 只查name -->
+  <select id="findSubjectNames" resultType="string">
+  	select subject_name subjectName from b_subject
+  </select>
+  
+  <select id="findSubjectList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  	SELECT
+	s.subject_id,s.subject_name,s.remark
+	FROM
+	b_grade_subject AS gs
+	INNER JOIN b_subject AS s ON gs.subject_id = s.subject_id
+	WHERE
+	gs.grade_id = #{gradeId,jdbcType=INTEGER}
+  </select>
+  <select id="findSubjects" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from b_subject
+  </select>
+  <select id="selectBySubjectName" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    <include refid="Base_Column_List" />
+    from b_subject
+  	subject_name = #{subjectName}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_subject
+    where subject_id = #{subjectId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_subject
+    where subject_id = #{subjectId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.Subject" >
+    insert into b_subject (subject_id, subject_name, remark
+      )
+    values (#{subjectId,jdbcType=INTEGER}, #{subjectName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.Subject" >
+    insert into b_subject
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="subjectId != null" >
+        subject_id,
+      </if>
+      <if test="subjectName != null" >
+        subject_name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=INTEGER},
+      </if>
+      <if test="subjectName != null" >
+        #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.Subject" >
+    update b_subject
+    <set >
+      <if test="subjectName != null" >
+        subject_name = #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where subject_id = #{subjectId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.Subject" >
+    update b_subject
+    set subject_name = #{subjectName,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where subject_id = #{subjectId,jdbcType=INTEGER}
+  </update>
+</mapper>

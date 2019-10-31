@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.SemesterMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.Semester" >
+    <id column="semester_id" property="semesterId" jdbcType="INTEGER" />
+    <result column="semester_name" property="semesterName" jdbcType="VARCHAR" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="recess_time" property="recessTime" jdbcType="TIMESTAMP" />
+    <result column="reserve" property="reserve" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    semester_id, semester_name, creat_time, recess_time, reserve
+  </sql>
+  <select id="selectBySemesterNames" resultMap="BaseResultMap" parameterType="java.util.List">
+  	select 
+    <include refid="Base_Column_List" />
+    from b_semester 
+    where semester_name in
+  	<foreach collection="list" item="item" index="index" open="("  separator="," close=")">
+  		#{item}
+  	</foreach>
+  </select>
+   <!-- 根据学期名字获得学期 -->
+  <select id="selectBySemesterName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	select 
+    <include refid="Base_Column_List" />
+    from b_semester
+    where semester_name = #{semesterName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByYear" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" /> FROM b_semester WHERE semester_name LIKE CONCAT(#{semesterYear,jdbcType=VARCHAR},"%")
+  </select>
+  <!-- 判断当前时间在哪个学期 -->
+  <select id="selectByCurrent" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    <include refid="Base_Column_List" />
+    from b_semester
+    where
+    recess_time>(SELECT CURRENT_DATE)  and (SELECT CURRENT_DATE) >creat_time
+  </select>
+  <select id="findSemesters" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from b_semester
+    order by semester_id desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_semester
+    where semester_id = #{semesterId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_semester
+    where semester_id = #{semesterId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.Semester" >
+    insert into b_semester (semester_id, semester_name, creat_time, 
+      recess_time, reserve)
+    values (#{semesterId,jdbcType=INTEGER}, #{semesterName,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP}, 
+      #{recessTime,jdbcType=TIMESTAMP}, #{reserve,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.Semester" >
+    insert into b_semester
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="semesterId != null" >
+        semester_id,
+      </if>
+      <if test="semesterName != null" >
+        semester_name,
+      </if>
+      <if test="creatTime != null" >
+        creat_time,
+      </if>
+      <if test="recessTime != null" >
+        recess_time,
+      </if>
+      <if test="reserve != null" >
+        reserve,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="semesterId != null" >
+        #{semesterId,jdbcType=INTEGER},
+      </if>
+      <if test="semesterName != null" >
+        #{semesterName,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null" >
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recessTime != null" >
+        #{recessTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserve != null" >
+        #{reserve,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.Semester" >
+    update b_semester
+    <set >
+      <if test="semesterName != null" >
+        semester_name = #{semesterName,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null" >
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recessTime != null" >
+        recess_time = #{recessTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserve != null" >
+        reserve = #{reserve,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where semester_id = #{semesterId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.Semester" >
+    update b_semester
+    set semester_name = #{semesterName,jdbcType=VARCHAR},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      recess_time = #{recessTime,jdbcType=TIMESTAMP},
+      reserve = #{reserve,jdbcType=VARCHAR}
+    where semester_id = #{semesterId,jdbcType=INTEGER}
+  </update>
+</mapper>

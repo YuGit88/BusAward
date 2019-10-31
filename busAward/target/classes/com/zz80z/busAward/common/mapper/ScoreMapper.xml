@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.ScoreMapper">
+	<resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.Score">
+		<id column="score_id" property="scoreId" jdbcType="INTEGER" />
+		<result column="score_stu" property="scoreStu" jdbcType="INTEGER" />
+		<result column="score_subject" property="scoreSubject"
+			jdbcType="INTEGER" />
+		<result column="score_num" property="scoreNum" jdbcType="INTEGER" />
+		<result column="score_semester" property="scoreSemester"
+			jdbcType="INTEGER" />
+		<result column="exam_name" property="examName" jdbcType="VARCHAR" />
+		<association property="student"
+			javaType="com.zz80z.busAward.common.model.Student" select="selectStudentByStuId"
+			column="stuId"></association>
+		<association property="subject"
+			javaType="com.zz80z.busAward.common.model.Subject" select="selectSubjectBySubjectId"
+			column="subjectId"></association>
+		<association property="semester"
+			javaType="com.zz80z.busAward.common.model.Semester" select="selectSemesterBySemesterId"
+			column="semesterId"></association>
+	</resultMap>
+	<sql id="Base_Column_List">
+		score_id, score_stu, score_subject, score_num,
+		score_semester, exam_name
+	</sql>
+	<sql id="limit_sql">
+		<if test="page_sql != null and page_sql != ''">
+			${page_sql}
+		</if>
+	</sql>
+	<sql id="where_all">
+		<where>
+			<if test="findContent != null and findContent !='' ">
+				and (
+				LOWER(score_semester) like
+				LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%")) or
+				LOWER(score_subject) like
+				LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%")) or
+				LOWER(score_stu) like
+				LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%"))
+				)
+			</if>
+		</where>
+	</sql>
+	<select id="findAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from b_score
+		<include refid="where_all" />
+		<include refid="limit_sql" />
+	</select>
+	<select id="findCount" resultMap="BaseResultMap">
+		select count(stu_id) from b_student where class_id=1
+		<include refid="where_all" />
+	</select>
+	<select id="selectProgressCount" resultType="com.zz80z.busAward.common.model.ProgressCount">
+		SELECT
+		COUNT(*),GROUP_CONCAT(real_name)
+		FROM
+		b_student
+		WHERE
+		(stu_class_mark IN
+		<foreach item="classMarks" index="index" collection="classMarks"
+			open="(" separator="," close=")">
+			#{classMarks}
+		</foreach>
+		)
+		AND
+		stu_id IN(SELECT stu_id FROM b_record WHERE description LIKE
+		(CONCAT("%",#{description,jdbcType=VARCHAR},"%"))
+	</select>
+
+	<!-- 查询小组的成绩平均分 -->
+	<select id="findScoreByGroup" resultType="com.zz80z.busAward.common.model.GroupScore">
+
+		SELECT
+		semesterName,examName,classMark,groupName,AVG(chineseScore)chineseScore,AVG(mathScore)mathScore,AVG(englishScore)englishScore,
+		AVG(politicsScore)politicsScore,AVG(historyScore)historyScore,AVG(geographyScore)geographyScore,
+		AVG(physicsScore)physicsScore,AVG(chemistryScore)chemistryScore,AVG(biologyScore)biologyScore
+		FROM
+		(SELECT sc.exam_name examName, se.semester_name
+		semesterName,st.stu_class_mark classMark,st.stu_group groupName,
+		MAX(CASE sc.score_subject WHEN 1 THEN sc.score_num ELSE NULL END)
+		chineseScore,
+		MAX(CASE sc.score_subject WHEN 2 THEN sc.score_num ELSE
+		NULL END) mathScore,
+		MAX(CASE sc.score_subject WHEN 3 THEN sc.score_num
+		ELSE NULL END) englishScore,
+		MAX(CASE sc.score_subject WHEN 4 THEN
+		sc.score_num ELSE NULL END) politicsScore,
+		MAX(CASE sc.score_subject
+		WHEN 5 THEN sc.score_num ELSE NULL END) historyScore,
+		MAX(CASE
+		sc.score_subject WHEN 6 THEN sc.score_num ELSE NULL END)
+		geographyScore,
+		MAX(CASE sc.score_subject WHEN 7 THEN sc.score_num ELSE
+		NULL END) physicsScore,
+		MAX(CASE sc.score_subject WHEN 8 THEN
+		sc.score_num ELSE NULL END) chemistryScore,
+		MAX(CASE sc.score_subject
+		WHEN 9 THEN sc.score_num ELSE NULL END) biologyScore,
+		CAST(avg(sc.score_num*1.0) AS decimal(18,2))
+		avgScore,SUM(sc.score_num) sumScore
+		FROM b_score sc LEFT JOIN
+		b_semester se ON se.semester_id = sc.score_semester
+		LEFT JOIN b_student
+		st ON st.stu_id = sc.score_stu
+
+		WHERE se.semester_id = #{semesterId} AND sc.exam_name = #{examName} AND
+		st.stu_group = #{group} AND st.stu_class_mark =#{classMark}
+		GROUP BY
+		sc.score_stu) S
+	</select>
+
+
+	<!-- 查询 某年级各名次段的人数 -->
+	<select id="selectCountRankByClass" resultType="com.zz80z.busAward.common.model.ClassRankCount">
+		<![CDATA[
+		SELECT
+		IFNULL(COUNT(S.stu_id),0) count,IFNULL(GROUP_CONCAT(S.real_name),NULL) names
+		FROM
+		b_rank R LEFT JOIN b_student S ON R.stu_id = S.stu_id
+		WHERE S.stu_class_mark = #{classMark} AND R.exam_name=#{examName} AND R.semester_id =#{semesterId} AND R.rank <#{rank1} UNION ALL
+		SELECT
+		IFNULL(COUNT(S.stu_id),0) count,IFNULL(GROUP_CONCAT(S.real_name),NULL) names
+		FROM
+		b_rank R LEFT JOIN b_student S ON R.stu_id = S.stu_id
+		WHERE S.stu_class_mark = #{classMark} AND R.exam_name=#{examName} AND R.semester_id =#{semesterId} AND R.rank <#{rank2} UNION ALL
+		SELECT
+		IFNULL(COUNT(S.stu_id),0) count,IFNULL(GROUP_CONCAT(S.real_name),NULL) names
+		FROM
+		b_rank R LEFT JOIN b_student S ON R.stu_id = S.stu_id
+		WHERE S.stu_class_mark = #{classMark} AND R.exam_name=#{examName} AND R.semester_id =#{semesterId} AND R.rank <#{rank3} UNION ALL
+		SELECT
+		IFNULL(COUNT(S.stu_id),0)  count,IFNULL(GROUP_CONCAT(S.real_name),NULL) names
+		FROM
+		b_rank R LEFT JOIN b_student S ON R.stu_id = S.stu_id
+		WHERE S.stu_class_mark = #{classMark} AND R.exam_name=#{examName} AND R.semester_id =#{semesterId} AND R.rank <#{rank4} UNION ALL
+		SELECT
+		IFNULL(COUNT(S.stu_id),0)  count,IFNULL(GROUP_CONCAT(S.real_name),NULL) names
+		FROM
+		b_rank R LEFT JOIN b_student S ON R.stu_id = S.stu_id
+		WHERE S.stu_class_mark = #{classMark} AND R.exam_name=#{examName} AND R.semester_id =#{semesterId} AND R.rank <#{rank5} UNION ALL
+		SELECT
+		IFNULL(COUNT(S.stu_id),0)  count,IFNULL(GROUP_CONCAT(S.real_name),NULL) names
+		FROM
+		b_rank R LEFT JOIN b_student S ON R.stu_id = S.stu_id
+		WHERE S.stu_class_mark = #{classMark} AND R.exam_name=#{examName} AND R.semester_id =#{semesterId} AND R.rank <#{rank6} UNION ALL
+		SELECT
+		IFNULL(COUNT(S.stu_id),0)  count,IFNULL(GROUP_CONCAT(S.real_name),NULL) names
+		FROM
+		b_rank R LEFT JOIN b_student S ON R.stu_id = S.stu_id
+		WHERE S.stu_class_mark = #{classMark} AND R.exam_name=#{examName} AND R.semester_id =#{semesterId} AND R.rank <#{rank7}
+		]]>
+	</select>
+
+	<!-- 得到带成绩的学生信息 -->
+	<select id="selectStuScoreRank" resultType="com.zz80z.busAward.user.bo.StudentScoreBo">
+
+		SELECT ra.exam_name examName,ra.stu_id stuId, ra.rank
+		rank,se.semester_name semesterName,
+		MAX(CASE sc.score_subject WHEN 1
+		THEN sc.score_num ELSE NULL END) chineseScore,
+		MAX(CASE
+		sc.score_subject WHEN 2 THEN sc.score_num ELSE NULL END) mathScore,
+		MAX(CASE sc.score_subject WHEN 3 THEN sc.score_num ELSE NULL END)
+		englishScore,
+		MAX(CASE sc.score_subject WHEN 4 THEN sc.score_num ELSE
+		NULL END) politicsScore,
+		MAX(CASE sc.score_subject WHEN 5 THEN
+		sc.score_num ELSE NULL END) historyScore,
+		MAX(CASE sc.score_subject
+		WHEN 6 THEN sc.score_num ELSE NULL END) geographyScore,
+		MAX(CASE
+		sc.score_subject WHEN 7 THEN sc.score_num ELSE NULL END) physicsScore,
+		MAX(CASE sc.score_subject WHEN 8 THEN sc.score_num ELSE NULL END)
+		chemistryScore,
+		MAX(CASE sc.score_subject WHEN 9 THEN sc.score_num ELSE
+		NULL END) biologyScore,
+		CAST(avg(sc.score_num*1.0) AS decimal(18,2))
+		avgScore,SUM(sc.score_num) sumScore
+		FROM b_score sc LEFT JOIN b_rank ra
+		ON sc.score_stu = ra.stu_id AND sc.score_semester = ra.semester_id AND
+		sc.exam_name = ra.exam_name
+		LEFT JOIN b_semester se ON se.semester_id =
+		ra.semester_id
+
+		WHERE sc.score_stu= #{stuId} AND ra.semester_id = #{semesterId} AND
+		ra.exam_name = #{examName}
+
+	</select>
+
+
+	<select id="selectScoreRank" resultType="com.zz80z.busAward.user.bo.StudentScoreBo">
+		SELECT obj.*,CASE WHEN @rowtotal = obj.sumScore THEN @rownum
+		WHEN
+		@rowtotal := obj.sumScore THEN @rownum :=@rownum + 1
+		WHEN @rowtotal = 0
+		THEN @rownum :=@rownum + 1 END as rank
+		FROM( select st.stu_id stuId,
+		sum(sc.score_num) sumScore
+		from b_student st LEFT JOIN b_score sc on
+		sc.score_stu = st.stu_id
+		JOIN b_class cl on cl.class_id = st.class_id
+		WHERE sc.score_semester= #{semesterId}
+		AND sc.exam_name= #{examName}
+		AND cl.grade_name = #{gradeName}
+		GROUP BY score_stu,sc.exam_name
+		ORDER
+		BY sumScore DESC) AS obj,(SELECT @rownum := 0 ,@rowtotal := NULL) r
+	</select>
+	<!-- 查询某次考试某年级单科最优秀的学生 -->
+	<select id="findBestOfSubject" resultType="com.zz80z.busAward.user.bo.ScoreBo"
+		statementType="CALLABLE">
+		{call findBestOfSubject(
+		#{gradeName,jdbcType=INTEGER,mode=IN},
+		#{examName,jdbcType=VARCHAR,mode=IN},
+		#{semesterId,jdbcType=INTEGER,mode=IN})}
+	</select>
+	<!-- 按年级获得本次考试 与上次考试（如果有的话）总分之差 -->
+	<select id="findProgressGrade" statementType="CALLABLE"
+		resultType="com.zz80z.busAward.user.bo.ScoreProgressBo">
+		{call
+		findProgressGrade(
+		#{gradeName,jdbcType=INTEGER,mode=IN},
+		#{examName,jdbcType=VARCHAR,mode=IN},
+		#{semesterId,jdbcType=INTEGER,mode=IN},
+		#{lastExam,jdbcType=VARCHAR,mode=IN},
+		#{lastSemesterId,jdbcType=INTEGER,mode=IN}
+		)}
+	</select>
+	<!-- 按年级获得本次考试 与上次考试（如果有的话）总分之差 -->
+	<select id="findProgressClass" statementType="CALLABLE"
+		resultType="com.zz80z.busAward.user.bo.ScoreProgressBo">
+		{call
+		findProgressClass(
+		#{className,jdbcType=INTEGER,mode=IN},
+		#{examName,jdbcType=VARCHAR,mode=IN},
+		#{semesterId,jdbcType=INTEGER,mode=IN},
+		#{lastExam,jdbcType=VARCHAR,mode=IN},
+		#{lastSemesterId,jdbcType=INTEGER,mode=IN}
+		)}
+	</select>
+	<!--同类别班级名次查询 -->
+	<select id="findRankByClassCategory" resultType="com.zz80z.busAward.user.bo.StudentScoreBo"
+		statementType="CALLABLE">
+		{call findRankByClassCategory(
+		#{semesterId,jdbcType=INTEGER,mode=IN},
+		#{examName,jdbcType=VARCHAR,mode=IN},
+		#{gradeName,jdbcType=INTEGER,mode=IN},
+		#{category,jdbcType=VARCHAR,mode=IN},
+		#{ranks,jdbcType=INTEGER,mode=IN}
+		)}
+	</select>
+	<!-- 通过学生ID获得Student -->
+	<select id="selectStudentByStuId" resultType="com.zz80z.busAward.common.model.Student">
+		select * from
+		b_student where stu_id =
+		#{stuId,jdbcType=INTEGER}
+	</select>
+	<!-- 通过学科ID获得Subject -->
+	<select id="selectSubjectBySubjectId" resultType="com.zz80z.busAward.common.model.Subject">
+		select * from
+		b_subject where subject_id =
+		#{subjectId,jdbcType=INTEGER}
+	</select>
+	<!-- 通过学期ID获得Semester -->
+	<select id="selectSemesterBySemesterId" resultType="com.zz80z.busAward.common.model.Semester">
+		select * from
+		b_semester where semester_id =
+		#{semesterId,jdbcType=INTEGER}
+	</select>
+	<!-- 各班各学科的当学期，当年，三年的平均分、及格率、优秀率 -->
+	<select id="findSubjectInfoByClassMark" resultType="com.zz80z.busAward.user.bo.SubjectData">
+		SELECT bsu.subject_name subjectName,
+		cast(avg(bsc.score_num*1.0) as
+		decimal(18,2)) avgScore,
+		100*sum(case
+		when bsc.score_num>=60 then 1 else
+		0 end)/count(*) passRate,
+		100*sum(case when bsc.score_num>=85 then 1
+		else 0 end)/count(*)
+		excellentRate
+		FROM
+		(SELECT DISTINCT
+		b_student.stu_class_mark,b_student.stu_id FROM b_student)bcl
+		LEFT JOIN
+		b_score AS bsc ON bcl.stu_id = bsc.score_stu
+		LEFT JOIN b_subject AS bsu
+		ON bsc.score_subject = bsu.subject_id
+		RIGHT JOIN b_semester AS bse ON
+		bsc.score_semester = bse.semester_id
+		<where>
+			<if test="classMarks != null ">
+				(bcl.stu_class_mark IN
+				<foreach item="classMarks" index="index" collection="classMarks"
+					open="(" separator="," close=")">
+					#{classMarks}
+				</foreach>
+				)
+			</if>
+			<if test="semesterIds != null ">
+				and (bse.semester_id IN
+				<foreach item="semesterIds" index="index" collection="semesterIds"
+					open="(" separator="," close=")">
+					#{semesterIds}
+				</foreach>
+				)
+			</if>
+		</where>
+		GROUP BY
+		bsc.score_subject
+	</select>
+
+	<!-- 查询成绩列表 -->
+	<select id="findStudentAndScorePage" resultType="com.zz80z.busAward.user.bo.StudentScoreBo"
+		parameterType="java.util.Map">
+		select st.real_name realName,st.stu_no stuNo,cl.class_name className,
+		(case cl.grade_name when 1 then '七年级' when 2 then "八年级" else "九年级"
+		end)gradeName,
+		max(case sc.score_subject when 1 then sc.score_num else
+		"-1" end) chineseScore,
+		max(case sc.score_subject when 2 then
+		sc.score_num else "-1" end) mathScore,
+		max(case sc.score_subject when 3
+		then sc.score_num else "-1" end) englishScore,
+		max(case
+		sc.score_subject when 4 then sc.score_num else "-1" end)
+		politicsScore,
+		max(case sc.score_subject when 5 then sc.score_num else
+		"-1" end) historyScore,
+		max(case sc.score_subject when 6 then
+		sc.score_num else "-1" end) geographyScore,
+		max(case sc.score_subject
+		when 7 then sc.score_num else "-1" end) physicsScore,
+		max(case
+		sc.score_subject when 8 then sc.score_num else "-1" end)
+		chemistryScore,
+		max(case sc.score_subject when 9 then sc.score_num else
+		"-1" end) biologyScore,
+		cast(avg(sc.score_num*1.0) as decimal(18,2))
+		avgScore, sum(sc.score_num) sumScore,
+		sc.exam_name
+		from b_student st
+		LEFT JOIN
+		b_score sc on st.stu_id = sc.score_stu
+		LEFT JOIN b_class cl on
+		st.class_id = cl.class_id
+		<where>
+			<if test="semesterId != null and semesterId !=''">
+				(sc.score_semester = #{semesterId})
+			</if>
+			<if test="examName != null and examName !=''">
+				and (sc.exam_name = #{examName})
+			</if>
+			<if test="classMark != null and classMark !=''">
+				and (st.stu_class_mark=#{classMark})
+			</if>
+		</where>
+		GROUP BY st.stu_id,sc.exam_name
+		ORDER BY sumScore DESC
+		<include refid="where_all" />
+		<include refid="limit_sql" />
+	</select>
+	<!-- 个人成绩展示 -->
+	<select id="findMyScore" resultType="com.zz80z.busAward.user.bo.StudentScoreBo"
+		parameterType="java.util.Map">
+		SELECT se.semester_name,sc.exam_name,st.stu_id,
+		st.real_name realName, st.stu_no stuNo,
+		MAX(CASE sc.score_subject WHEN
+		1 THEN sc.score_num ELSE NULL END) chineseScore,
+		MAX(CASE
+		sc.score_subject WHEN 2 THEN sc.score_num ELSE NULL END) mathScore,
+		MAX(CASE sc.score_subject WHEN 3 THEN sc.score_num ELSE NULL END)
+		englishScore,
+		MAX(CASE sc.score_subject WHEN 4 THEN sc.score_num ELSE
+		NULL END) politicsScore,
+		MAX(CASE sc.score_subject WHEN 5 THEN
+		sc.score_num ELSE NULL END) historyScore,
+		MAX(CASE sc.score_subject
+		WHEN 6 THEN sc.score_num ELSE NULL END) geographyScore,
+		MAX(CASE
+		sc.score_subject WHEN 7 THEN sc.score_num ELSE NULL END) physicsScore,
+		MAX(CASE sc.score_subject WHEN 8 THEN sc.score_num ELSE NULL END)
+		chemistryScore,
+		MAX(CASE sc.score_subject WHEN 9 THEN sc.score_num ELSE
+		NULL END) biologyScore,
+		CAST(avg(sc.score_num*1.0) AS decimal(18,2))
+		avgScore,SUM(sc.score_num) sumScore
+		FROM b_student st LEFT JOIN b_score
+		sc ON sc.score_stu = st.stu_id
+		LEFT JOIN b_class cl ON cl.class_id =
+		st.class_id
+		LEFT JOIN b_semester se ON se.semester_id =
+		sc.score_semester
+		WHERE st.stu_id= #{stuId}
+		GROUP BY
+		sc.exam_name,se.semester_id
+	</select>
+	<!-- 批量导入成绩 -->
+	<insert id="leadScore" parameterType="java.util.List">
+		REPLACE INTO b_score(score_stu, score_subject, score_num,
+		score_semester, exam_name)
+		<foreach collection="list" item="item" index="index"
+			separator="union all">
+			(SELECT #{item.scoreStu}, #{item.scoreSubject},
+			#{item.scoreNum},
+			#{item.scoreSemester}, #{item.examName}
+			FROM DUAL
+			WHERE NOT EXISTS
+			(SELECT score_id FROM b_score WHERE
+			score_stu =
+			#{item.scoreStu} and score_semester= #{item.scoreSemester} and
+			exam_name = #{item.examName} and score_subject =
+			#{item.scoreSubject}))
+		</foreach>
+	</insert>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from b_score
+		where score_id = #{scoreId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		b_score
+		where score_id =
+		#{scoreId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zz80z.busAward.common.model.Score">
+		replace into b_score
+		(score_id, score_stu,
+		score_subject,
+		score_num, score_semester,
+		exam_name)
+		values
+		(#{scoreId,jdbcType=INTEGER},
+		#{scoreStu,jdbcType=INTEGER},
+		#{scoreSubject,jdbcType=INTEGER},
+		#{scoreNum,jdbcType=INTEGER},
+		#{scoreSemester,jdbcType=INTEGER},
+		#{examName,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.Score">
+		insert into b_score
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="scoreId != null">
+				score_id,
+			</if>
+			<if test="scoreStu != null">
+				score_stu,
+			</if>
+			<if test="scoreSubject != null">
+				score_subject,
+			</if>
+			<if test="scoreNum != null">
+				score_num,
+			</if>
+			<if test="scoreSemester != null">
+				score_semester,
+			</if>
+			<if test="examName != null">
+				exam_name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="scoreId != null">
+				#{scoreId,jdbcType=INTEGER},
+			</if>
+			<if test="scoreStu != null">
+				#{scoreStu,jdbcType=INTEGER},
+			</if>
+			<if test="scoreSubject != null">
+				#{scoreSubject,jdbcType=INTEGER},
+			</if>
+			<if test="scoreNum != null">
+				#{scoreNum,jdbcType=INTEGER},
+			</if>
+			<if test="scoreSemester != null">
+				#{scoreSemester,jdbcType=INTEGER},
+			</if>
+			<if test="examName != null">
+				#{examName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.Score">
+		update b_score
+		<set>
+			<if test="scoreStu != null">
+				score_stu = #{scoreStu,jdbcType=INTEGER},
+			</if>
+			<if test="scoreSubject != null">
+				score_subject = #{scoreSubject,jdbcType=INTEGER},
+			</if>
+			<if test="scoreNum != null">
+				score_num = #{scoreNum,jdbcType=INTEGER},
+			</if>
+			<if test="scoreSemester != null">
+				score_semester = #{scoreSemester,jdbcType=INTEGER},
+			</if>
+			<if test="examName != null">
+				exam_name = #{examName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where score_id = #{scoreId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.Score">
+		update b_score
+		set
+		score_stu =
+		#{scoreStu,jdbcType=INTEGER},
+		score_subject =
+		#{scoreSubject,jdbcType=INTEGER},
+		score_num =
+		#{scoreNum,jdbcType=INTEGER},
+		score_semester =
+		#{scoreSemester,jdbcType=INTEGER},
+		exam_name =
+		#{examName,jdbcType=VARCHAR}
+		where score_id =
+		#{scoreId,jdbcType=INTEGER}
+	</update>
+</mapper>

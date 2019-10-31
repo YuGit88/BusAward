@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.ClassDayMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.ClassDay" >
+    <id column="classday_id" property="classdayId" jdbcType="INTEGER" />
+    <result column="class_mark" property="classMark" jdbcType="VARCHAR" />
+    <result column="discipline" property="discipline" jdbcType="INTEGER" />
+    <result column="health" property="health" jdbcType="INTEGER" />
+    <result column="team_activity" property="teamActivity" jdbcType="INTEGER" />
+    <result column="duty_activity" property="dutyActivity" jdbcType="INTEGER" />
+    <result column="day" property="day" jdbcType="DATE" />
+    <result column="reserve" property="reserve" jdbcType="VARCHAR" />
+    <association property="classs" column="class_id" javaType="com.zz80z.busAward.common.model.Classs">
+    <id column="class_id" property="classId" jdbcType="INTEGER" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="grade_name" property="gradeName" jdbcType="INTEGER" />
+    <result column="class_category" property="classCategory" jdbcType="CHAR" />
+    <result column="head_tch" property="headTch" jdbcType="INTEGER" />
+    <result column="stu_class_mark" property="stuClassMark" jdbcType="VARCHAR" />
+    <result column="reserve" property="reserve" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    classday_id, class_mark, discipline, health, team_activity, duty_activity, day, reserve
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_class_day
+    where classday_id = #{classdayId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_class_day
+    where classday_id = #{classdayId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.ClassDay" >
+    insert into b_class_day (classday_id, class_mark, discipline, 
+      health, team_activity, duty_activity, 
+      day, reserve)
+    values (#{classdayId,jdbcType=INTEGER}, #{classMark,jdbcType=VARCHAR}, #{discipline,jdbcType=INTEGER}, 
+      #{health,jdbcType=INTEGER}, #{teamActivity,jdbcType=INTEGER}, #{dutyActivity,jdbcType=INTEGER}, 
+      #{day,jdbcType=DATE}, #{reserve,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.ClassDay" >
+    insert into b_class_day
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classdayId != null" >
+        classday_id,
+      </if>
+      <if test="classMark != null" >
+        class_mark,
+      </if>
+      <if test="discipline != null" >
+        discipline,
+      </if>
+      <if test="health != null" >
+        health,
+      </if>
+      <if test="teamActivity != null" >
+        team_activity,
+      </if>
+      <if test="dutyActivity != null" >
+        duty_activity,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+      <if test="reserve != null" >
+        reserve,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classdayId != null" >
+        #{classdayId,jdbcType=INTEGER},
+      </if>
+      <if test="classMark != null" >
+        #{classMark,jdbcType=VARCHAR},
+      </if>
+      <if test="discipline != null" >
+        #{discipline,jdbcType=INTEGER},
+      </if>
+      <if test="health != null" >
+        #{health,jdbcType=INTEGER},
+      </if>
+      <if test="teamActivity != null" >
+        #{teamActivity,jdbcType=INTEGER},
+      </if>
+      <if test="dutyActivity != null" >
+        #{dutyActivity,jdbcType=INTEGER},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=DATE},
+      </if>
+      <if test="reserve != null" >
+        #{reserve,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.ClassDay" >
+    update b_class_day
+    <set >
+      <if test="classMark != null" >
+        class_mark = #{classMark,jdbcType=VARCHAR},
+      </if>
+      <if test="discipline != null" >
+        discipline = #{discipline,jdbcType=INTEGER},
+      </if>
+      <if test="health != null" >
+        health = #{health,jdbcType=INTEGER},
+      </if>
+      <if test="teamActivity != null" >
+        team_activity = #{teamActivity,jdbcType=INTEGER},
+      </if>
+      <if test="dutyActivity != null" >
+        duty_activity = #{dutyActivity,jdbcType=INTEGER},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=DATE},
+      </if>
+      <if test="reserve != null" >
+        reserve = #{reserve,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where classday_id = #{classdayId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.ClassDay" >
+    update b_class_day
+    set class_mark = #{classMark,jdbcType=VARCHAR},
+      discipline = #{discipline,jdbcType=INTEGER},
+      health = #{health,jdbcType=INTEGER},
+      team_activity = #{teamActivity,jdbcType=INTEGER},
+      duty_activity = #{dutyActivity,jdbcType=INTEGER},
+      day = #{day,jdbcType=DATE},
+      reserve = #{reserve,jdbcType=VARCHAR}
+    where classday_id = #{classdayId,jdbcType=INTEGER}
+  </update>
+  <!-- 班级日常信息导入 -->
+  <insert id="classExcel" parameterType="java.util.List">
+      insert into b_class_day (class_mark, class_id,discipline, 
+      health, team_activity, duty_activity, 
+      day)
+    values 
+     <foreach collection="list" item="item" open="" separator=",">  
+    (#{item.classMark,jdbcType=VARCHAR},#{item.classId,jdbcType=INTEGER} ,#{item.discipline,jdbcType=INTEGER}, 
+      #{item.health,jdbcType=INTEGER}, #{item.teamActivity,jdbcType=INTEGER}, #{item.dutyActivity,jdbcType=INTEGER}, 
+      #{item.day,jdbcType=DATE})
+       </foreach>
+  </insert>
+  
+  <select id="countClassDayAndClass" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select bd.classday_id,bd.class_mark,bc.*,
+	SUM(discipline) as discipline,
+	SUM(health) as health,
+	SUM(team_activity) as team_activity,
+	SUM(duty_activity) as duty_activity
+	FROM b_class bc,b_class_day bd
+	where bd.class_mark=bc.stu_class_mark  and bd.day BETWEEN #{beginTime}  and #{endTime} 
+	and bc.class_id=#{classMark} and bc.reserve=1
+	GROUP BY bd.class_mark
+  </select>
+  
+  <select id="selectTeacherList" resultType="com.zz80z.busAward.common.model.Teacher">
+  select * from b_teacher bt,b_subject bs where  bt.tch_subject=bs.subject_id
+  </select>
+  
+  <select id="subjectList" parameterType="int" resultType="com.zz80z.busAward.common.model.Subject">
+  select * from b_subject where subject_id in( select subject_id from b_grade_subject where grade_id=#{gradeName})
+  </select>
+  
+  <delete id="deleteClassDay">
+  	truncate table b_class_day
+  </delete>
+  
+  	<select id="selectClassChart" parameterType="java.util.Map" resultType="com.zz80z.busAward.user.bo.classAndClassDay">
+select bc.class_name,bc.grade_name,bd.class_id,sum(discipline) as discipline,sum(health) as health,sum(team_activity) as team_activity,sum(duty_activity) as duty_activity from b_class_day bd LEFT JOIN b_class bc 
+on bd.class_id=bc.class_id
+where day BETWEEN #{beginTime} and #{endTime} and bc.reserve=1
+group by bd.class_id
+	
+	</select>
+  
+</mapper>

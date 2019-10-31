@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.StudentMapper">
+	<resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.Student">
+		<id column="stu_id" property="stuId" jdbcType="INTEGER" />
+		<result column="stu_no" property="stuNo" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="stu_sex" property="stuSex" jdbcType="CHAR" />
+		<result column="stu_address" property="stuAddress" jdbcType="VARCHAR" />
+		<result column="stu_birthday" property="stuBirthday" jdbcType="DATE" />
+		<result column="class_id" property="classId" jdbcType="INTEGER" />
+		<result column="stu_group" property="stuGroup" jdbcType="VARCHAR" />
+		<result column="stu_class_mark" property="stuClassMark" jdbcType="VARCHAR" />
+		<result column="reserve" property="reserve" jdbcType="VARCHAR" />
+		<association property="classs" column="class_id" javaType="com.zz80z.busAward.common.model.Classs">
+			<id column="class_id" property="classId" jdbcType="INTEGER" />
+			<result column="class_name" property="className" jdbcType="VARCHAR" />
+			<result column="grade_name" property="gradeName" jdbcType="INTEGER" />
+			<result column="class_category" property="classCategory" jdbcType="CHAR" />
+			<result column="head_tch" property="headTch" jdbcType="INTEGER" />
+			<result column="stu_class_mark" property="stuClassMark" jdbcType="VARCHAR" />
+			<result column="reserve" property="reserve" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	
+	<!-- 普通的分页查询 -->
+	<select id="findStudentAndClass" resultMap="BaseResultMap" parameterType="java.util.Map">
+	<if test="jurisdiction==1">
+	select * from b_student bs,b_class bc where bs.stu_class_mark=bc.stu_class_mark and bc.stu_class_mark=#{classMark}
+   and (
+				LOWER(real_name) like
+				LOWER(CONCAT("%",#{findContent},"%")) or
+				LOWER(stu_no) like
+				LOWER(CONCAT("%",#{findContent},"%"))
+		)
+	</if>
+	<if test="jurisdiction==0">
+		select * from b_student bs,b_class bc 
+		where bs.class_id in
+		(select class_id from b_class_teacher 
+		where tch_id in
+	   (select role_id from b_user_role 
+	   where user_id=#{userId}))
+	   and bc.class_id=bs.class_id order by bc.class_id
+	   and (
+				LOWER(real_name) like
+				LOWER(CONCAT("%",#{findContent},"%")) or
+				LOWER(stu_no) like
+				LOWER(CONCAT("%",#{findContent},"%"))
+		)
+		</if>
+	   <include refid="limit_sql" />
+	</select>
+	
+	  <sql id="limit_sql">
+		<if test="page_sql != null and page_sql != ''">
+			${page_sql}
+		</if>
+	</sql>
+	
+	<sql id="where_all">
+		<where>
+			<if test="findContent != null and findContent !='' ">
+				and (
+				LOWER(real_name) like
+				LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%")) or
+				LOWER(stu_no) like
+				LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%"))
+				)
+			</if>
+		</where>
+	</sql>
+	
+	<select id="findCount" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select count(stu_id) from b_student bs,b_class bc 
+		where bs.class_id in
+		(select class_id from b_class_teacher 
+		where tch_id in
+	   (select role_id from b_user_role 
+	   where user_id=#{userid})) 
+	   and bc.class_id=bs.class_id 
+		<include refid="where_all" />
+	</select>
+	
+	<select id="findAll" resultMap="BaseResultMap" >
+		select
+		*
+		from b_student 
+		<include refid="where_all" />
+		<include refid="limit_sql" />
+	</select>
+
+	<sql id="Base_Column_List">
+		stu_id, stu_no, real_name, stu_sex, stu_address, stu_birthday, class_id,
+		stu_group,
+		stu_class_mark, reserve
+	</sql>
+	<select id="selectStuIdByStuNo">
+		select
+		<include refid="Base_Column_List" />
+		from b_student
+		where stu_no = #{stuNo}
+	</select>
+	<!-- 重置密码验证 -->
+	<select id="selectByStudent" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from b_student
+		where stu_no = #{stu_No} and real_name = #{realName} and stu_birthday = #{stuBirthday}
+	</select>
+  <!-- 根据StuNo获得student的全部信息 -->
+  <select id="selectByStuNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    <include refid="Base_Column_List" />
+    from b_student
+    where stu_no = #{stuNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_student
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_student
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.Student" >
+    insert into b_student (stu_id, stu_no, real_name, 
+      stu_sex, stu_address, stu_birthday, 
+      class_id, stu_group, stu_class_mark, 
+      reserve)
+    values (#{stuId,jdbcType=INTEGER}, #{stuNo,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
+      #{stuSex,jdbcType=CHAR}, #{stuAddress,jdbcType=VARCHAR}, #{stuBirthday,jdbcType=DATE}, 
+      #{classId,jdbcType=INTEGER}, #{stuGroup,jdbcType=VARCHAR}, #{stuClassMark,jdbcType=VARCHAR}, 
+      #{reserve,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.Student" >
+    insert into b_student
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="stuNo != null" >
+        stu_no,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="stuSex != null" >
+        stu_sex,
+      </if>
+      <if test="stuAddress != null" >
+        stu_address,
+      </if>
+      <if test="stuBirthday != null" >
+        stu_birthday,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="stuGroup != null" >
+        stu_group,
+      </if>
+      <if test="stuClassMark != null" >
+        stu_class_mark,
+      </if>
+      <if test="reserve != null" >
+        reserve,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stuId != null" >
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="stuNo != null" >
+        #{stuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuSex != null" >
+        #{stuSex,jdbcType=CHAR},
+      </if>
+      <if test="stuAddress != null" >
+        #{stuAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="stuBirthday != null" >
+        #{stuBirthday,jdbcType=DATE},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="stuGroup != null" >
+        #{stuGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="stuClassMark != null" >
+        #{stuClassMark,jdbcType=VARCHAR},
+      </if>
+      <if test="reserve != null" >
+        #{reserve,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.Student" >
+    update b_student
+    <set >
+      <if test="stuNo != null" >
+        stu_no = #{stuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuSex != null" >
+        stu_sex = #{stuSex,jdbcType=CHAR},
+      </if>
+      <if test="stuAddress != null" >
+        stu_address = #{stuAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="stuBirthday != null" >
+        stu_birthday = #{stuBirthday,jdbcType=DATE},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="stuGroup != null" >
+        stu_group = #{stuGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="stuClassMark != null" >
+        stu_class_mark = #{stuClassMark,jdbcType=VARCHAR},
+      </if>
+      <if test="reserve != null" >
+        reserve = #{reserve,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.Student" >
+    update b_student
+    set stu_no = #{stuNo,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      stu_sex = #{stuSex,jdbcType=CHAR},
+      stu_address = #{stuAddress,jdbcType=VARCHAR},
+      stu_birthday = #{stuBirthday,jdbcType=DATE},
+      class_id = #{classId,jdbcType=INTEGER},
+      stu_group = #{stuGroup,jdbcType=VARCHAR},
+      stu_class_mark = #{stuClassMark,jdbcType=VARCHAR},
+      reserve = #{reserve,jdbcType=VARCHAR}
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <!-- 根据当前登录用户ID查询其职位 -->
+  <select id="selectPositionByUserId" parameterType="int" resultType="String">
+   select role_name from b_role 
+  where role_id in
+ (select role_id from b_user_role 
+  where user_id=#{userid}) having max(role_id)
+  </select>
+  
+    <!-- 根据年级和班级查询班级id -->
+  <select id="selectClassByClassNameAndGradeName" parameterType="com.zz80z.busAward.common.model.Classs" resultType="com.zz80z.busAward.common.model.Classs">
+  select * from b_class where grade_name=#{gradeName} and class_name=#{className}
+  </select>
+
+
+
+	<!-- 查询学生列表 -->
+	<select id="selectList" parameterType="int" resultMap="BaseResultMap">
+		select * from b_student bs,b_class bc 
+		where bs.class_id=(select class_id from b_class_teacher 
+		where tch_id=
+	   (select role_id from b_user_role 
+	   where user_id=#{userid})) 
+	   and bc.class_id=bs.class_id
+	</select>
+
+
+	<select id="selectClasssList"
+		resultType="com.zz80z.busAward.common.model.Classs">
+		select * from b_class where reserve=1
+	</select>
+
+	<select id="selectClasssByclassgrade" parameterType="int"
+		resultType="com.zz80z.busAward.common.model.Classs">
+		select * from b_class where grade_name=#{gradename}
+	</select>
+
+	<select id="selectCmark" parameterType="int" resultType="String">
+		select stu_class_mark from b_class where class_id=#{cid}
+	</select>
+
+	<insert id="insertStu" parameterType="com.zz80z.busAward.common.model.Student">
+	  insert into b_student (stu_no, real_name, 
+      stu_sex, stu_address, stu_birthday, 
+      class_id, stu_group, stu_class_mark, 
+      reserve)
+      values ( #{stuNo,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
+      #{stuSex,jdbcType=CHAR}, #{stuAddress,jdbcType=VARCHAR}, #{stuBirthday,jdbcType=DATE}, 
+      #{classId,jdbcType=INTEGER}, #{stuGroup,jdbcType=VARCHAR}, #{stuClassMark,jdbcType=VARCHAR}, 
+      #{reserve,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="selectTea"
+		resultType="com.zz80z.busAward.common.model.Teacher">
+		select * from b_teacher where tch_id=1
+	</select>
+  
+  <insert id="StudentExcelInsert" parameterType="java.util.List">
+    insert into b_student (stu_no, real_name, 
+      stu_sex, stu_address, stu_birthday, 
+      class_id, stu_group, stu_class_mark, 
+      reserve) values 
+  <foreach collection="list" item="item" open="" separator=",">  
+     (#{item.stuNo,jdbcType=VARCHAR}, #{item.realName,jdbcType=VARCHAR}, 
+      #{item.stuSex,jdbcType=CHAR}, #{item.stuAddress,jdbcType=VARCHAR}, #{item.stuBirthday,jdbcType=DATE}, 
+      #{item.classId,jdbcType=INTEGER}, #{item.stuGroup,jdbcType=VARCHAR}, #{item.stuClassMark,jdbcType=VARCHAR}, 
+      #{item.reserve,jdbcType=VARCHAR})
+  </foreach>
+  </insert>
+  
+  <delete id="StudentDeleteByStuId" parameterType="int">
+  delete from b_student where stu_id=#{stuid}
+  </delete>
+  
+  <select id="selectStudentByStuId" parameterType="int" resultMap="BaseResultMap">
+  select * from b_student bs,b_class bc where bs.class_id=bc.class_id and bs.stu_id=#{stuid}
+  </select>
+  
+  <update id="updateStu" parameterType="com.zz80z.busAward.common.model.Student">
+	 update b_student bs SET 
+	<if test="stuNo!=null">
+	bs.stu_no=#{stuNo},
+	</if>
+	<if test="realName!=null">
+	bs.real_name=#{realName},
+	</if>
+	<if test="stuSex!=null">
+	bs.stu_sex=#{stuSex},
+	</if>
+	<if test="stuAddress!=null">
+	bs.stu_address=#{stuAddress},
+	</if>
+	<if test="stuBirthday!=null">
+	bs.stu_birthday=#{stuBirthday},
+	</if>
+	<if test="classId!=null">
+	bs.class_id=#{classId},
+	</if>
+	<if test="stuGroup!=null">
+	bs.stu_group=#{stuGroup},
+	</if>
+	<if test="stuClassMark!=null">
+	bs.stu_class_mark=#{stuClassMark}
+	</if>
+	where stu_id=#{stuId}
+  </update>
+  
+  <select id="selectByStu" parameterType="com.zz80z.busAward.common.model.Student" resultMap="BaseResultMap">
+  select * from b_student bs,b_class bc where  bs.real_name LIKE concat("%",#{realName},"%") or bs.stu_no like concat("%",#{stuNo},"%") and bs.class_id=bc.class_id
+  </select>
+  
+  <insert id="creatStuUser" parameterType="com.zz80z.busAward.common.model.User">
+       <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userId">
+          SELECT LAST_INSERT_ID()
+      </selectKey>
+ 		insert into b_user (
+		type, 
+		user_name,
+		user_pwd,
+		satus
+		)
+		values
+		(
+		#{type,jdbcType=CHAR},
+		#{userName,jdbcType=VARCHAR},
+		#{userPwd,jdbcType=VARCHAR},
+		#{satus,jdbcType=INTEGER}
+		)
+  </insert>
+  
+  <select id="pdStuNo" parameterType="com.zz80z.busAward.common.model.Student" resultType="com.zz80z.busAward.common.model.Student">
+  select * from b_student where stu_no=#{stuNo}
+  </select>
+  
+  <insert id="insertUserRole" parameterType="com.zz80z.busAward.common.model.UserRole">
+   insert into b_user_role (user_id, role_id)
+    values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
+  </insert>
+  
+  <select id="stuDayChartList" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.StudentChart">
+  	select *,
+		CASE
+		WHEN @rowtotal = ass.total THEN
+		    @rank
+		WHEN @rowtotal := ass.total THEN
+		    @rank :=@rank + 1
+		WHEN @rowtotal = 0 THEN
+		    @rank :=@rank + 1
+		END AS rank from (
+
+		select 
+			bd.stu_id,bs.real_name,bc.stu_class_mark,bs.stu_group,(
+			SUM(attendance)+
+			SUM(appearance)+
+			SUM(morning)+
+			SUM(discipline)+
+			SUM(punishment)+
+			SUM(assembly)+
+			SUM(flag)+
+			SUM(health)+
+			SUM(chinese)+
+			SUM(math)+
+			SUM(english)+
+			SUM(politics)+
+			SUM(history)+
+			SUM(geography)+
+			SUM(physics)+
+			SUM(cexercise)+
+			SUM(chemistry)+
+			SUM(biology)) as total
+			from b_stu_day bd,b_student bs,b_class bc,(SELECT @rank := 0 ,@rowtotal := NULL) r
+			where bd.stu_id=bs.stu_id 
+			and bs.class_id=bc.class_id
+			and bs.class_id=#{classId}
+			and  bd.day=#{dayDate}
+			and bs.reserve=1
+			 GROUP  BY bd.stu_id ORDER BY total DESC) as ass
+  </select>
+    
+  <select id="stuWeekChartList" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.StudentChart">
+ 		select *,
+		CASE
+		WHEN @rowtotal = ass.total THEN
+		    @rank
+		WHEN @rowtotal := ass.total THEN
+		    @rank :=@rank + 1
+		WHEN @rowtotal = 0 THEN
+		    @rank :=@rank + 1
+		END AS rank from (
+
+		select 
+			bd.stu_id,bs.real_name,bc.stu_class_mark,bs.stu_group,(
+			SUM(attendance)+
+			SUM(appearance)+
+			SUM(morning)+
+			SUM(discipline)+
+			SUM(punishment)+
+			SUM(assembly)+
+			SUM(flag)+
+			SUM(health)+
+			SUM(chinese)+
+			SUM(math)+
+			SUM(english)+
+			SUM(politics)+
+			SUM(history)+
+			SUM(geography)+
+			SUM(physics)+
+			SUM(cexercise)+
+			SUM(chemistry)+
+			SUM(biology)) as total
+			from b_stu_day bd,b_student bs,b_class bc,(SELECT @rank := 0 ,@rowtotal := NULL) r
+			where bd.stu_id=bs.stu_id 
+			and bs.class_id=bc.class_id
+			and bs.class_id=#{classId}
+			and  bd.day BETWEEN #{beginTime} and #{endTime}
+			GROUP  BY bd.stu_id ORDER BY total DESC) as ass
+  
+  </select>
+  
+    <select id="stuMothChartList" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.StudentChart">
+ 		select *,
+		CASE
+		WHEN @rowtotal = ass.total THEN
+		    @rank
+		WHEN @rowtotal := ass.total THEN
+		    @rank :=@rank + 1
+		WHEN @rowtotal = 0 THEN
+		    @rank :=@rank + 1
+		END AS rank from (
+
+		select 
+			bd.stu_id,bs.real_name,bc.stu_class_mark,bs.stu_group,(
+			SUM(attendance)+
+			SUM(appearance)+
+			SUM(morning)+
+			SUM(discipline)+
+			SUM(punishment)+
+			SUM(assembly)+
+			SUM(flag)+
+			SUM(health)+
+			SUM(chinese)+
+			SUM(math)+
+			SUM(english)+
+			SUM(politics)+
+			SUM(history)+
+			SUM(geography)+
+			SUM(physics)+
+			SUM(cexercise)+
+			SUM(chemistry)+
+			SUM(biology)) as total
+			from b_stu_day bd,b_student bs,b_class bc,(SELECT @rank := 0 ,@rowtotal := NULL) r
+			where bd.stu_id=bs.stu_id 
+			and bs.class_id=bc.class_id
+			and bs.class_id=#{classId}
+			and  bd.day BETWEEN #{beginTime} and #{endTime}
+			GROUP  BY bd.stu_id ORDER BY total DESC) as ass
+  
+  </select>
+   <select id="stuSemesterChartList" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.StudentChart">
+ 		select *,
+		CASE
+		WHEN @rowtotal = ass.total THEN
+		    @rank
+		WHEN @rowtotal := ass.total THEN
+		    @rank :=@rank + 1
+		WHEN @rowtotal = 0 THEN
+		    @rank :=@rank + 1
+		END AS rank from (
+
+		select 
+			bd.stu_id,bs.real_name,bc.stu_class_mark,bs.stu_group,(
+			SUM(attendance)+
+			SUM(appearance)+
+			SUM(morning)+
+			SUM(discipline)+
+			SUM(punishment)+
+			SUM(assembly)+
+			SUM(flag)+
+			SUM(health)+
+			SUM(chinese)+
+			SUM(math)+
+			SUM(english)+
+			SUM(politics)+
+			SUM(history)+
+			SUM(geography)+
+			SUM(physics)+
+			SUM(cexercise)+
+			SUM(chemistry)+
+			SUM(biology)) as total
+			from b_stu_day bd,b_student bs,b_class bc,(SELECT @rank := 0 ,@rowtotal := NULL) r
+			where bd.stu_id=bs.stu_id 
+			and bs.class_id=bc.class_id
+			and bs.class_id=#{classId}
+			and  bd.day BETWEEN #{beginTime} and #{endTime}
+			GROUP  BY bd.stu_id ORDER BY total DESC) as ass
+  
+  </select>
+  
+  <select id="stuHealthList" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.StudentChart">
+  select * FROM 
+		(select *, 
+		CASE
+		WHEN @rowtotal = countstuday.total THEN
+		    @rank
+		WHEN @rowtotal := countstuday.total THEN
+		    @rank :=@rank + 1
+		WHEN @rowtotal = 0 THEN
+		    @rank :=@rank + 1
+		END AS rank from (
+		select 
+		bc.grade_name,bc.class_name,bt.stu_class_mark,bt.stu_group,(
+		(SUM(health)/count(*)))
+		 as total
+		from b_stu_day bs,b_student bt,b_class bc,(SELECT @rank := 0 ,@rowtotal := NULL) r
+		where bs.stu_id=bt.stu_id and bc.class_id=bt.class_id and bs.day BETWEEN #{beginTime} and #{endTime}  and bt.class_id=#{classId}
+		GROUP BY bt.stu_group,bt.stu_class_mark 
+		order by bt.stu_class_mark,total desc 
+		) as countstuday ) as rank 
+  </select>
+    <select id="stuDisciplineList" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.StudentChart">
+ select * FROM 
+		(select *, 
+		CASE
+		WHEN @rowtotal = countstuday.total THEN
+		    @rank
+		WHEN @rowtotal := countstuday.total THEN
+		    @rank :=@rank + 1
+		WHEN @rowtotal = 0 THEN
+		    @rank :=@rank + 1
+		END AS rank from (
+		select 
+		bc.grade_name,bc.class_name,bt.stu_class_mark,bt.stu_group,(
+		(SUM(discipline)/count(*)))
+		 as total
+		from b_stu_day bs,b_student bt,b_class bc,(SELECT @rank := 0 ,@rowtotal := NULL) r
+		where bs.stu_id=bt.stu_id and bc.class_id=bt.class_id and bs.day BETWEEN #{beginTime} and #{endTime}  and bt.class_id=#{classId}
+		GROUP BY bt.stu_group,bt.stu_class_mark 
+		order by bt.stu_class_mark,total desc 
+		) as countstuday ) as rank 
+  </select>
+  
+   <select id="stuTaskList" parameterType="java.util.Map" resultType="com.zz80z.busAward.common.model.StudentChart">
+	select * FROM 
+		(select *, 
+		CASE
+		WHEN @rowtotal = countstuday.total THEN
+		    @rank
+		WHEN @rowtotal := countstuday.total THEN
+		    @rank :=@rank + 1
+		WHEN @rowtotal = 0 THEN
+		    @rank :=@rank + 1
+		END AS rank from (
+		select 
+		bc.grade_name,bc.class_name,bt.stu_class_mark,bt.stu_group,(
+		(SUM(chinese)/count(*))+
+		(SUM(math)/count(*))+
+		(SUM(english)/count(*))+
+		(SUM(politics)/count(*))+
+		(SUM(history)/count(*))+
+		(SUM(geography)/count(*))+
+		(SUM(physics)/count(*))+
+		(SUM(chemistry)/count(*))+
+		(SUM(biology)/count(*))) as total
+		from b_stu_day bs,b_student bt,b_class bc,(SELECT @rank := 0 ,@rowtotal := NULL) r
+		where bs.stu_id=bt.stu_id and bc.class_id=bt.class_id and bs.day BETWEEN #{beginTime} and #{endTime}  and bt.class_id=#{classId}
+		GROUP BY bt.stu_group,bt.stu_class_mark 
+		order by bt.stu_class_mark,total desc 
+		) as countstuday ) as rank 
+  </select>
+  
+  <select id="selectRecordByUserId" parameterType="int" resultType="com.zz80z.busAward.common.model.BRecord">
+  select * from b_record where stu_id=(select stu_id from b_student where stu_no=(select user_name from b_user where user_id=#{userId}))
+  </select>
+  
+  <select id="selectStuGroupByClassId" parameterType="String" resultType="String">
+  select DISTINCT stu_group from b_student bt left join b_class bc on bt.class_id=bc.class_id where bc.class_id=#{classId}
+  </select>
+  
+  <select id="selectStuIdByClassId" parameterType="String" resultType="String">
+  select DISTINCT stu_id from b_student bt left join b_class bc on bt.class_id=bc.class_id where bc.class_id=96
+  </select>
+  
+  <select id="selectFromStudent" parameterType="java.util.Map" resultMap="BaseResultMap" >
+  <if test="jurisdiction==1">
+	SELECT bs.*,bc.class_name,bc.grade_name,bc.class_category,bc.head_tch from b_student bs LEFT JOIN b_class bc on bs.class_id=bc.class_id  where bc.reserve=1 and bc.reserve=1 and bs.class_id=#{classMark} 
+   and (
+				LOWER(real_name) like
+				LOWER(CONCAT("%",#{findContent},"%")) or
+				LOWER(stu_no) like
+				LOWER(CONCAT("%",#{findContent},"%"))
+		)
+		GROUP BY bs.stu_id
+	</if>
+	<if test="jurisdiction==0">
+		select * from b_student bs,b_class bc 
+		where bs.class_id in
+		(select class_id from b_class_teacher 
+		where tch_id in
+	   (select role_id from b_user_role 
+	   where user_id=#{userId}))
+	   and bc.class_id=bs.class_id order by bc.class_id
+	   and (
+				LOWER(real_name) like
+				LOWER(CONCAT("%",#{findContent},"%")) or
+				LOWER(stu_no) like
+				LOWER(CONCAT("%",#{findContent},"%"))
+		)
+		and bs.reserve=1 and bc.reserve=1
+		</if>
+  </select>
+</mapper>

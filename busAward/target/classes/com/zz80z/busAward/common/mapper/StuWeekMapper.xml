@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.StuWeekMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.StuWeek" >
+    <id column="stuweek_id" property="stuweekId" jdbcType="INTEGER" />
+    <result column="stu_id" property="stuId" jdbcType="INTEGER" />
+    <result column="week" property="week" jdbcType="VARCHAR" />
+    <result column="advan_group" property="advanGroup" jdbcType="CHAR" />
+    <result column="progress_group" property="progressGroup" jdbcType="CHAR" />
+    <result column="care" property="care" jdbcType="CHAR" />
+    <result column="service" property="service" jdbcType="CHAR" />
+    <result column="just" property="just" jdbcType="CHAR" />
+    <result column="integrity" property="integrity" jdbcType="CHAR" />
+    <result column="progress" property="progress" jdbcType="CHAR" />
+    <result column="stimulate" property="stimulate" jdbcType="CHAR" />
+    <result column="reserve" property="reserve" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    stuweek_id, stu_id, week, advan_group, progress_group, care, service, just, integrity, 
+    progress, stimulate, reserve
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_stu_week
+    where stuweek_id = #{stuweekId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_stu_week
+    where stuweek_id = #{stuweekId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.StuWeek" >
+    insert into b_stu_week (stuweek_id, stu_id, week, 
+      advan_group, progress_group, care, 
+      service, just, integrity, progress, 
+      stimulate, reserve)
+    values (#{stuweekId,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, #{week,jdbcType=VARCHAR}, 
+      #{advanGroup,jdbcType=CHAR}, #{progressGroup,jdbcType=CHAR}, #{care,jdbcType=CHAR}, 
+      #{service,jdbcType=CHAR}, #{just,jdbcType=CHAR}, #{integrity,jdbcType=CHAR}, #{progress,jdbcType=CHAR}, 
+      #{stimulate,jdbcType=CHAR}, #{reserve,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.StuWeek" >
+    insert into b_stu_week
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stuweekId != null" >
+        stuweek_id,
+      </if>
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+      <if test="advanGroup != null" >
+        advan_group,
+      </if>
+      <if test="progressGroup != null" >
+        progress_group,
+      </if>
+      <if test="care != null" >
+        care,
+      </if>
+      <if test="service != null" >
+        service,
+      </if>
+      <if test="just != null" >
+        just,
+      </if>
+      <if test="integrity != null" >
+        integrity,
+      </if>
+      <if test="progress != null" >
+        progress,
+      </if>
+      <if test="stimulate != null" >
+        stimulate,
+      </if>
+      <if test="reserve != null" >
+        reserve,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stuweekId != null" >
+        #{stuweekId,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null" >
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="week != null" >
+        #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="advanGroup != null" >
+        #{advanGroup,jdbcType=CHAR},
+      </if>
+      <if test="progressGroup != null" >
+        #{progressGroup,jdbcType=CHAR},
+      </if>
+      <if test="care != null" >
+        #{care,jdbcType=CHAR},
+      </if>
+      <if test="service != null" >
+        #{service,jdbcType=CHAR},
+      </if>
+      <if test="just != null" >
+        #{just,jdbcType=CHAR},
+      </if>
+      <if test="integrity != null" >
+        #{integrity,jdbcType=CHAR},
+      </if>
+      <if test="progress != null" >
+        #{progress,jdbcType=CHAR},
+      </if>
+      <if test="stimulate != null" >
+        #{stimulate,jdbcType=CHAR},
+      </if>
+      <if test="reserve != null" >
+        #{reserve,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.StuWeek" >
+    update b_stu_week
+    <set >
+      <if test="stuId != null" >
+        stu_id = #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="week != null" >
+        week = #{week,jdbcType=VARCHAR},
+      </if>
+      <if test="advanGroup != null" >
+        advan_group = #{advanGroup,jdbcType=CHAR},
+      </if>
+      <if test="progressGroup != null" >
+        progress_group = #{progressGroup,jdbcType=CHAR},
+      </if>
+      <if test="care != null" >
+        care = #{care,jdbcType=CHAR},
+      </if>
+      <if test="service != null" >
+        service = #{service,jdbcType=CHAR},
+      </if>
+      <if test="just != null" >
+        just = #{just,jdbcType=CHAR},
+      </if>
+      <if test="integrity != null" >
+        integrity = #{integrity,jdbcType=CHAR},
+      </if>
+      <if test="progress != null" >
+        progress = #{progress,jdbcType=CHAR},
+      </if>
+      <if test="stimulate != null" >
+        stimulate = #{stimulate,jdbcType=CHAR},
+      </if>
+      <if test="reserve != null" >
+        reserve = #{reserve,jdbcType=CHAR},
+      </if>
+    </set>
+    where stuweek_id = #{stuweekId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.StuWeek" >
+    update b_stu_week
+    set stu_id = #{stuId,jdbcType=INTEGER},
+      week = #{week,jdbcType=VARCHAR},
+      advan_group = #{advanGroup,jdbcType=CHAR},
+      progress_group = #{progressGroup,jdbcType=CHAR},
+      care = #{care,jdbcType=CHAR},
+      service = #{service,jdbcType=CHAR},
+      just = #{just,jdbcType=CHAR},
+      integrity = #{integrity,jdbcType=CHAR},
+      progress = #{progress,jdbcType=CHAR},
+      stimulate = #{stimulate,jdbcType=CHAR},
+      reserve = #{reserve,jdbcType=CHAR}
+    where stuweek_id = #{stuweekId,jdbcType=INTEGER}
+  </update>
+</mapper>

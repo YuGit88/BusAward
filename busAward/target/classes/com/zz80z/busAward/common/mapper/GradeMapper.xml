@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.GradeMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.Grade" >
+    <id column="grade_id" property="gradeId" jdbcType="INTEGER" />
+    <result column="grade_name" property="gradeName" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    grade_id, grade_name, remark
+  </sql>
+  <select id="findList" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+    from b_grade
+  </select>
+<!-- 查询每个年级所拥有的科目信息 -->
+  <select id="findGradeAndSubject" resultType="com.zz80z.busAward.user.bo.GradeAndSubject">
+  	SELECT 
+	g.grade_id,g.grade_name,group_concat(s.subject_name) subjectNames,group_concat(s.subject_id)subjectIds
+	FROM b_grade g LEFT JOIN b_grade_subject gs ON g.grade_id = gs.grade_id
+	LEFT JOIN b_subject s ON gs.subject_id = s.subject_id
+	GROUP BY g.grade_id
+  </select>
+  <!-- 获得某个年级的学生人数 -->
+  <select id="selectCountByGrade" resultType="java.lang.Integer" >
+  	SELECT 
+	COUNT(b_student.stu_id)
+	FROM
+	b_student LEFT JOIN b_class ON b_student.class_id = b_class.class_id
+	WHERE
+	b_class.reserve = #{reserve} AND b_class.grade_name = #{gradeName}
+  </select>
+  <select id="selectByGradeName" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select <include refid="Base_Column_List" /> from b_grade where
+  	grade_name = #{gradeName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectSubjectByGradeId" resultType="com.zz80z.busAward.user.bo.SubjectBo">
+  	select BS.subject_id,BS.subject_name,ifnull(BGS.grade_id,0) marker,BGS.grade_id gradeId
+		from b_subject BS
+		left join(select * from b_grade_subject where grade_id=#{gradeId,jdbcType=INTEGER})
+		BGS on BGS.subject_id = BS.subject_id
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_grade
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from b_grade
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.Grade" >
+    insert into b_grade (grade_id, grade_name, remark
+      )
+    values (#{gradeId,jdbcType=INTEGER}, #{gradeName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.Grade" >
+    insert into b_grade
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gradeId != null" >
+        grade_id,
+      </if>
+      <if test="gradeName != null" >
+        grade_name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gradeId != null" >
+        #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeName != null" >
+        #{gradeName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.Grade" >
+    update b_grade
+    <set >
+      <if test="gradeName != null" >
+        grade_name = #{gradeName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.Grade" >
+    update b_grade
+    set grade_name = #{gradeName,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+</mapper>

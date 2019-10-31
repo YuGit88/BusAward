@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zz80z.busAward.common.dao.ClassTeacherMapper" >
+  <resultMap id="BaseResultMap" type="com.zz80z.busAward.common.model.ClassTeacher" >
+    <result column="class_id" property="classId" jdbcType="INTEGER" />
+    <result column="tch_id" property="tchId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    class_id, tch_id
+  </sql>
+  <!-- 通过教师ID查 -->
+  <select id="findClassTeacherByTchId" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/>
+  	from b_class_teacher
+  	where tch_id = #{tchId,jdbcType=INTEGER}
+  </select>
+  <!-- 通过班级ID查 -->
+  <select id="findClassTeacherByClassId" resultMap="BaseResultMap">
+  select <include refid="Base_Column_List"/>
+  	from b_class_teacher
+  	where class_id = #{classId,jdbcType=INTEGER}
+  </select>
+  <!-- 根据教师 && 班级ID查找 -->
+  <select id="find" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/>
+  	from b_class_teacher
+  	where class_id = #{classId,jdbcType=INTEGER}
+  	and  tch_id = #{tchId,jdbcType=INTEGER}
+  </select> 
+  <!-- 根据教师ID删除-->
+  <delete id="deleteTchId">
+  	delete from b_class_teacher where tch_id = #{tchId,jdbcType=INTEGER}
+  </delete>
+   <!-- 根据班级ID删除-->
+  <delete id="deleteByClassId">
+  	delete from b_class_teacher where class_id = #{classId,jdbcType=INTEGER}
+  </delete>
+  <!-- 根据角色ID && 权限ID删除-->
+  <delete id="delete">
+  	delete from b_class_teacher where class_id = #{classId,jdbcType=INTEGER}
+  	and  tch_id = #{tchId,jdbcType=INTEGER}
+  </delete>
+  <!-- 根据角色IDs删除-->
+  <delete id="deleteByClassIds">
+  	delete from b_class_teacher where class_id in(#{classIds,jdbcType=VARCHAR})
+  </delete>
+  
+  <insert id="insert" parameterType="com.zz80z.busAward.common.model.ClassTeacher" >
+    insert into b_class_teacher (class_id, tch_id)
+    
+    values 
+      <foreach collection="list" item="item" open="" separator=",">  
+	 (#{item.classId,jdbcType=INTEGER}, #{item.tchId,jdbcType=INTEGER})
+  </foreach>
+   
+  </insert>
+  <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.ClassTeacher" >
+    insert into b_class_teacher
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="tchId != null" >
+        tch_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classId != null" >
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="tchId != null" >
+        #{tchId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

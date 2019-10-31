@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/filter
+END
+SimpleAuthFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/filter/SimpleAuthFilter.java
+END
+KickoutSessionFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/filter/KickoutSessionFilter.java
+END
+RoleFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/filter/RoleFilter.java
+END
+ShiroFilterUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/filter/ShiroFilterUtils.java
+END
+LoginFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/filter/LoginFilter.java
+END
+PermissionFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bus/!svn/ver/3/busAward/src/main/java/com/zz80z/busAward/core/shiro/filter/PermissionFilter.java
+END
