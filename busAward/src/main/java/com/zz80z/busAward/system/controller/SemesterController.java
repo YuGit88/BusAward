@@ -81,10 +81,14 @@ public class SemesterController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value="index")
-	public ModelAndView showSemester() {
+	public Map<String, Object> showSemester() {
 		
-		Semester semester = semesterService.selectByCurrent();
-		return new ModelAndView("/sys/index","semester",semester);
+		List<Semester> semester = semesterService.findSemesters();
+		
+		resultMap.put("sem", semester);
+		
+		return resultMap;
+		
 		
 	}
 	

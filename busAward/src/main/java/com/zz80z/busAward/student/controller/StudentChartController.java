@@ -61,7 +61,7 @@ public class StudentChartController {
 			stuChartMap.put("stuMothCharts", stuMothCharts);
 			//当学期学生列表
 			List<Semester> semesters=semesterService.findSemesters();
-			Map semesterMap=new HashMap();
+			Map<String, String> semesterMap=new HashMap<String, String>();
 			semesterMap.put("beginTime",sdf.format(semesters.get(0).getCreatTime()));
 			semesterMap.put("endTime",sdf.format(semesters.get(0).getRecessTime()));
 			semesterMap.put("classId",classId);

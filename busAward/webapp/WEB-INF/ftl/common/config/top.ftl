@@ -45,8 +45,8 @@
 						<@shiro.hasPermission name="/sys/index.shtml">
 						<li><a href="${basePath}/sys/index.shtml">学期设置</a></li>
 						</@shiro.hasPermission>
-						<@shiro.hasPermission name="/sys/award.shtml">
-						<li><a href="${basePath}/sys/award.shtml">奖励系数</a></li>
+						<@shiro.hasPermission name="/sys/awdUp.shtml">
+						<li><a href="${basePath}/sys/awdUp.shtml">奖励系数</a></li>
 						</@shiro.hasPermission>
 						<@shiro.hasPermission name="/sys/tchUp.shtml">
 						<li><a href="${basePath}/sys/tchUp.shtml">教师信息</a></li>
