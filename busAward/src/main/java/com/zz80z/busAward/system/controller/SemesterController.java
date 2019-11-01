@@ -23,7 +23,7 @@ import com.zz80z.busAward.system.service.SemesterService;
 
 @Controller
 @Scope(value="prototype")
-@RequestMapping("sys")
+@RequestMapping("/sys")
 public class SemesterController extends BaseController{
 	@Autowired
 	private SemesterService semesterService;
