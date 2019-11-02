@@ -217,7 +217,6 @@
 					<th>集会</th>
 					<th>升旗</th>
 					<th>卫生</th>
-					<th>小组</th>
 					<th>日期</th>
 					</tr>
 					<from id="addCoin" action="${basePath}/studay/insertCoin.shtml">
@@ -245,7 +244,7 @@
 					<th>${stuDay.assembly}分</th>
 					<th>${stuDay.flag}分</th>
 					<th>${stuDay.health}分</th>
-					<th>${stuDay.student.stuGroup}</th>
+					
 					<th>${nWeek}周</th>
 					</tr>
 					</#list>
