@@ -78,7 +78,7 @@
    xAxis: [
    {
    type: 'category',
-   data: ['A','B','C'],
+   data: [],
    axisPointer: {
    type: 'shadow'
    }
@@ -97,28 +97,6 @@
    },
 
    ],
-   series: [
-       {
-           name:'卫生',
-           type:'bar',
-           color: 'red',
-           data:[1, 2,3]
-       },
-       {
-       name:'纪律',
-       type:'bar',
-       data:[2.6, 8.9, 5 ]
-       },{
-       name:'团队活动',
-       type:'bar',
-       data:[2.6, 8.9, 5 ]
-       },{
-       name:'义务活动',
-       type:'bar',
-       data:[2.6, 8.9, 5 ]
-       },
-       
-   ]
    };
    if (option && typeof option === "object") {
    myChart.setOption(option, true);
@@ -169,10 +147,8 @@
        type:'bar',
        data:classDutyActivity
        },
-       
    ]
                         })
-			
 			});
    </script>
    

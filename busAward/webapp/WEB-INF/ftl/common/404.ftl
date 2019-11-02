@@ -46,7 +46,7 @@
 <@_top.top 1/>
 <div class="cc">
     <img src="${basePath}/images/404.png" alt="">
-    <p class="font"><a href="">返回首页</a></p>
+    <p class="font"><a href="${basePath}/news/index.shtml">返回首页</a></p>
 </div>
 </body>
 </html>

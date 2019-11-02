@@ -52,7 +52,7 @@
 						<li><a href="${basePath}/sys/tchUp.shtml">教师信息</a></li>
 						</@shiro.hasPermission>
 						<@shiro.hasPermission name="/classs/classUp.shtml">
-						<li><a href="${basePath}/classs/classUp.shtml">班级升级</a></li>
+						<li><a href="${basePath}/classs/classUp.shtml">班级管理</a></li>
 						</@shiro.hasPermission>
 						<@shiro.hasPermission name="/sys/alotSubject.shtml">
 						<li><a href="${basePath}/sys/alotSubject.shtml">科目管理</a></li>

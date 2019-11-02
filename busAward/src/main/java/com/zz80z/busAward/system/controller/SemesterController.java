@@ -88,13 +88,10 @@ public class SemesterController extends BaseController{
 		resultMap.put("sem", semester);
 		
 		return resultMap;
-		
-		
 	}
 	
 	@RequestMapping(value="semester")
 	public ModelAndView semester() {
-		
 		return new ModelAndView("sysmester");
 	}
 	/**
