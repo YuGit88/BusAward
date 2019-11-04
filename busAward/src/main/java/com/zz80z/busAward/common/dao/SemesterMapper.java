@@ -14,7 +14,7 @@ public interface SemesterMapper {
 
     int updateByPrimaryKeySelective(Semester record);
 
-    int updateByPrimaryKey(Semester record);
+    int updateByPrimaryKey(Integer semesterId);
     
     //判断当前时间在哪个学期
     Semester selectByCurrent();

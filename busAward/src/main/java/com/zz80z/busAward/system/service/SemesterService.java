@@ -9,7 +9,7 @@ public interface SemesterService {
 	Semester selectByCurrent();
 
 	int insertSelective(Semester record);
-
+	int updateByPrimaryKey(Semester record);
 	List<Semester> findSemesters();
 	
 	Semester selectBySemesterName(String semesterName);
@@ -19,5 +19,7 @@ public interface SemesterService {
 	Semester selectByPrimaryKey(Integer semesterId);
 	
 	List<Semester> selectByYear(String semesterYear);
+
+	int updateByPrimaryKey(Integer semesterId);
 	
 }

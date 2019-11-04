@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.zz80z.busAward.common.controller.BaseController;
@@ -64,26 +66,68 @@ public class SemesterController extends BaseController{
 	@ResponseBody
 	public Map<String, Object> addsem(Semester semester) {
 		
-				int count=semesterService.insertSelective(semester);
-				if (0 == count) {
+				try {
+					int count=semesterService.insertSelective(semester);
 					System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!"+count);
-					resultMap.put("status", 200);
-					resultMap.put("successCount", count);
-					resultMap.put("scuess", "添加成功");
+						resultMap.put("status", 200);
+						resultMap.put("successCount", count);
+						resultMap.put("scuess", "添加成功");
+				} catch (Exception e) {
 					
-					
-				} else {
-
-					// TODO Auto-generated catch block
 					resultMap.put("status", 500);
 					resultMap.put("message", "添加失败，请刷新后再试！");
-				}
-			
-		
+
+									}
+
 		return resultMap;
 		
 	}
+	//查询单条
+	@RequestMapping(value = "selectsemesterById",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String , Object> selectTchById(String semesterId){
+		Semester semester = semesterService.selectByPrimaryKey(Integer.parseInt(semesterId));
+		resultMap.put("status", 200);
+		resultMap.put("semester", semester);
+		return resultMap;
+		
+	}
+	//更新
+	@RequestMapping(value = "updatesemesterById")
+	@ResponseBody
+	public Map<String , Object> updatesemester(Semester semester,HttpServletRequest request){
+			System.out.println("11111111111111"+semester);
+			try {
+				request.setCharacterEncoding("UTF-8");
+				int count = semesterService.updateByPrimaryKey(semester);
+				System.out.println("555555555"+count);
+				resultMap.put("status", 200);
+				resultMap.put("successCount", count);
+				resultMap.put("message", "修改成功！");
+			} catch (Exception e) {
+				resultMap.put("status", 500);
+				resultMap.put("message", "修改失败，请刷新后再试！");
+				System.out.println("555555555修改中出现的错误信息"+e);
+			}
+		
+		return resultMap;
+	}
 	
+	@RequestMapping(value = "deletesemester",method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String , Object> deleteTch(Integer semesterId){
+		System.out.println("*************"+semesterId);
+			try {
+				int count = semesterService.updateByPrimaryKey(semesterId);
+				resultMap.put("status", 200);
+				resultMap.put("successCount", count);
+				resultMap.put("message", "删除成功");
+			} catch (Exception e) {
+				resultMap.put("status", 500);
+				resultMap.put("message", "删除失败，请刷新后再试！");
+			}
+		return resultMap;
+	}
 	/**
 	 * 修改奖励系数
 	 * @param award

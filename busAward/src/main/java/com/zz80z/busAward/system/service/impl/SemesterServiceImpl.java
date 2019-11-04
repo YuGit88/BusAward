@@ -48,4 +48,18 @@ public class SemesterServiceImpl implements SemesterService {
 		return semesterDao.selectByYear(semesterYear);
 	}
 
+	
+
+	@Override
+	public int updateByPrimaryKey(Integer semesterId) {
+		// TODO Auto-generated method stub
+		return semesterDao.updateByPrimaryKey(semesterId);
+	}
+
+	@Override
+	public int updateByPrimaryKey(Semester record) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 }
