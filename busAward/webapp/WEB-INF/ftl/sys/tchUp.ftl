@@ -148,7 +148,7 @@
 			  </div>
 			</div>
 			
-			<div class="modal fade bs-example-modal-sm"  id="updateTeacher" tabindex="-1" role="dialog" aria-labelledby="selectPermissionLabel">
+			 <div class="modal fade bs-example-modal-sm"  id="updateTeacher" tabindex="-1" role="dialog" aria-labelledby="selectPermissionLabel">
 			  <div class="modal-dialog modal-sm" role="document">
 			    <div class="modal-content">
 			      <div class="modal-header">

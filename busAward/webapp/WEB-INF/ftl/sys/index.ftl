@@ -13,7 +13,6 @@
 		<script  src="${basePath}/js/shiro.demo.js"></script>
 		<script src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
 		
-
 </head>
 <body data-spy="scroll">
 		<script>
@@ -39,7 +38,7 @@
 				<div class="col-md-10">
 					<h2>学期列表</h2>
 					<hr>
-				<a href="#" class="btn btn-primary btn-lg active" role="button">新增学期</a>
+					<a class="btn btn-success" onclick="$('#addsemester').modal();">新增学期</a>
 <table class="table table-bordered" align="center">
 <tr>
 					<th>选择</th>
@@ -57,14 +56,113 @@
 					<th>${semeste.recessTime?string('yyyy-MM-dd')}</th>	
 					
 					<th>
-					<a href="#">编辑</a>
+					<!-- Button trigger modal -->
+<a class="btn btn-success" onclick="$('#updateTeacher').modal();">修改</a>
+
+
 					</th>
 					<th>
-					<a href="#">删除</a>
+					<a href="" class="btn btn-danger">删除</a>
 					</th>
 					</tr>
 					</#list>
 
 
 </table>
+
+
+<div class="modal fade bs-example-modal-sm"  id="addsemester" tabindex="-1" role="dialog" aria-labelledby="selectPermissionLabel">
+			  <div class="modal-dialog modal-sm" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">添加信息</h4>
+			      </div>
+			      <div class="modal-body">
+			    <form method="post" action="" id="addsemester">
+			      <ul>
+					<li>学期名：<input type="text" name="semesterName" id="semesterName"/></li>
+					<li>开始时间：<input type="date" name="creatTime" id="creatTime"/></li>
+					<li>结束时间：<input type="date" name="recessTime" id="recessTime"/></li>
+				  </ul>
+				</form>
+			   </div>
+			    <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        <button type="button" onclick="addsemester()" class="btn btn-primary">Save</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			
+			 <div class="modal fade bs-example-modal-sm"  id="updateTeacher" tabindex="-1" role="dialog" aria-labelledby="selectPermissionLabel">
+			  <div class="modal-dialog modal-sm" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">修改信息</h4>
+			      </div>
+			      <div class="modal-body">
+			    <form method="post" action="" id="upTch">
+			      <ul>
+					<li>学期名：<input type="text" name="semesterName" id="semesterName"/></li>
+					<li>开始时间：<input type="date" name="creatTime" id="creatTime"/></li>
+					<li>结束时间：<input type="date" name="recessTime" id="recessTime"/></li>
+				  </ul>
+				</form>
+			   </div>
+			    <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        <button type="button" onclick="updateTch()" class="btn btn-primary">Save</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<!-- 添加信息的ajax请求 -->
+			 <script>
+				   function addsemester(){
+				    var semesterName=$("semesterName").val();
+				    var creatTime=$("#creatTime").val();
+				    var recessTime=$("#recessTime").val();
+					if(semesterName=="" || creatTime=="" || recessTime=="" ){
+							alert("请将数据补充完整");
+					}else{
+						$.get('${basePath}/sys/addsemester.shtml',$('#addsemester').serialize(),function(data,textStatus,jqXHR){
+				    		console.log(data);
+				    		alert(data.scuess); 
+				    		 window.location.reload();
+							});
+					}
+				   }
+   			</script>
+   			<!-- 修改教师信息的ajax请求 -->
+			<script>
+			 
+				   function updateTch(){
+					   
+					   alert("请谨慎修改您的信息");
+						$.getJSON('${basePath}/sys/updateTchByTchNo.shtml',$('#upTch').serialize(),function(data,textStatus,jqXHR){
+				    		console.log(data);
+				    		alert(data.message); 
+				    		 window.location.reload();
+							});
+					}
+   			</script>
+   			<!-- 删除教师信息的ajax请求 -->
+   			<script>
+				    function deleteTea(tcheId){   
+				        confirm_ = confirm('您确定要删除该条数据?请谨慎考虑.');
+				        if(confirm_){
+				        	 $.ajax({
+				                 type:"GET",
+				                 url:'${basePath}/sys/deleteTch.shtml?tcheId='+tcheId,
+				                 datatype:"json",
+				                 success:function(data){
+				                     alert(data.message);
+				                     window.location.reload();
+				                 }
+				             });
+				        }
+				    };
+			</script>
 </body>

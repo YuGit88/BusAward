@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.zz80z.busAward.common.controller.BaseController;
 import com.zz80z.busAward.common.model.Award;
 import com.zz80z.busAward.common.model.Semester;
+import com.zz80z.busAward.common.model.Teacher;
 import com.zz80z.busAward.common.utils.LoggerUtils;
 import com.zz80z.busAward.common.utils.StringUtils;
 import com.zz80z.busAward.system.service.AwardService;
@@ -56,6 +59,31 @@ public class SemesterController extends BaseController{
 		resultMap.put("semesters", semesters);
 		return resultMap;
 	}
+	//添加新学期
+	@RequestMapping(value="addsemester")
+	@ResponseBody
+	public Map<String, Object> addsem(Semester semester) {
+		
+				int count=semesterService.insertSelective(semester);
+				if (0 == count) {
+					System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!"+count);
+					resultMap.put("status", 200);
+					resultMap.put("successCount", count);
+					resultMap.put("scuess", "添加成功");
+					
+					
+				} else {
+
+					// TODO Auto-generated catch block
+					resultMap.put("status", 500);
+					resultMap.put("message", "添加失败，请刷新后再试！");
+				}
+			
+		
+		return resultMap;
+		
+	}
+	
 	/**
 	 * 修改奖励系数
 	 * @param award
