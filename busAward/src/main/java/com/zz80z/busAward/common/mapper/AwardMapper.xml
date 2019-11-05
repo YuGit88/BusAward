@@ -29,18 +29,25 @@
     from b_award
     where award_id = #{awardId,jdbcType=INTEGER}
   </select>
+  
+   <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from b_award
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from b_award
     where award_id = #{awardId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zz80z.busAward.common.model.Award" >
-    insert into b_award (award_id, advanced_group, progress_group, 
+    insert into b_award (advanced_group, progress_group, 
       level, first_best, first_better, 
       first_subject, progress_grade, progress_class, 
       advanced_class, activiyt_duty, activiyt_first, 
       activiyt_second, activiyt_third, week_coin
       )
-    values (#{awardId,jdbcType=INTEGER}, #{advancedGroup,jdbcType=INTEGER}, #{progressGroup,jdbcType=INTEGER}, 
+    values (#{advancedGroup,jdbcType=INTEGER}, #{progressGroup,jdbcType=INTEGER}, 
       #{level,jdbcType=INTEGER}, #{firstBest,jdbcType=INTEGER}, #{firstBetter,jdbcType=INTEGER}, 
       #{firstSubject,jdbcType=INTEGER}, #{progressGrade,jdbcType=INTEGER}, #{progressClass,jdbcType=INTEGER}, 
       #{advancedClass,jdbcType=INTEGER}, #{activiytDuty,jdbcType=INTEGER}, #{activiytFirst,jdbcType=INTEGER}, 
@@ -51,7 +58,7 @@
     insert into b_award
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="awardId != null" >
-        award_id,
+        awardId,
       </if>
       <if test="advancedGroup != null" >
         advanced_group,
@@ -97,8 +104,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="awardId != null" >
-        #{awardId,jdbcType=INTEGER},
+	  <if test="awardId != null" >
+        #{awardId,jdbcType=INTEGER},,
       </if>
       <if test="advancedGroup != null" >
         #{advancedGroup,jdbcType=INTEGER},
@@ -192,6 +199,7 @@
     </set>
     where award_id =  #{awardId,jdbcType=INTEGER}
   </update>
+  
   <update id="updateByPrimaryKey" parameterType="com.zz80z.busAward.common.model.Award" >
     update b_award
     set advanced_group = #{advancedGroup,jdbcType=INTEGER},

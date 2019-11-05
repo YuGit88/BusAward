@@ -1,5 +1,8 @@
 package com.zz80z.busAward.system.service.impl;
 
+import java.util.List;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,12 @@ public class AwardServiceImpl implements AwardService {
 
 	@Autowired
 	private AwardMapper awardMapper;
+	
+	@Override
+	public List<Award> selectAll() {
+		
+		return awardMapper.selectAll();
+	}
 
 	@Override
 	public Award selectByPrimaryKey(Integer awardId) {
@@ -27,4 +36,27 @@ public class AwardServiceImpl implements AwardService {
 
 	}
 
+	@Override
+	public int insert(Award record) {
+		
+		return awardMapper.insert(record);
+	}
+
+	@Override
+	public int deleteByPrimaryKey(Integer awardId) {
+		
+		return awardMapper.deleteByPrimaryKey(awardId);
+	}
+
+	@Override
+	public int insertSelective(Award record) {
+		
+		return awardMapper.insertSelective(record);
+	}
+
+	@Override
+	public int updateByPrimaryKey(Award record) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
