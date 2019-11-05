@@ -65,7 +65,6 @@ public class SemesterController extends BaseController{
 	@RequestMapping(value="addsemester")
 	@ResponseBody
 	public Map<String, Object> addsem(Semester semester) {
-		
 				try {
 					int count=semesterService.insertSelective(semester);
 					System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!"+count);
@@ -73,7 +72,6 @@ public class SemesterController extends BaseController{
 						resultMap.put("successCount", count);
 						resultMap.put("scuess", "添加成功");
 				} catch (Exception e) {
-					
 					resultMap.put("status", 500);
 					resultMap.put("message", "添加失败，请刷新后再试！");
 

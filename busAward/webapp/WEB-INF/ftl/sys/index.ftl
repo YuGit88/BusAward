@@ -116,11 +116,11 @@
 			      </div>
 			    </div>
 			  </div>
-			</div>
+			</div> 
 			<!-- 添加信息的ajax请求 -->
 			 <script>
 				   function addsemester(){
-				    var semesterName=$("semesterName").val();
+				    var semesterName=$("#semesterName").val();
 				    var creatTime=$("#creatTime").val();
 				    var recessTime=$("#recessTime").val();
 					if(semesterName=="" || creatTime=="" || recessTime=="" ){
