@@ -63,41 +63,8 @@
       #{recessTime,jdbcType=TIMESTAMP}, #{reserve,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.Semester" >
-    insert into b_semester
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="semesterId != null" >
-        semester_id,
-      </if>
-      <if test="semesterName != null" >
-        semester_name,
-      </if>
-      <if test="creatTime != null" >
-        creat_time,
-      </if>
-      <if test="recessTime != null" >
-        recess_time,
-      </if>
-      <if test="reserve != null" >
-        reserve,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="semesterId != null" >
-        #{semesterId,jdbcType=INTEGER},
-      </if>
-      <if test="semesterName != null" >
-        #{semesterName,jdbcType=VARCHAR},
-      </if>
-      <if test="creatTime != null" >
-        #{creatTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="recessTime != null" >
-        #{recessTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="reserve != null" >
-        #{reserve,jdbcType=VARCHAR},
-      </if>
-    </trim>
+    insert into b_semester(semester_name,creat_time, recess_time) values (#{semesterName,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP},#{recessTime,jdbcType=TIMESTAMP})
+    
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.Semester" >
     update b_semester

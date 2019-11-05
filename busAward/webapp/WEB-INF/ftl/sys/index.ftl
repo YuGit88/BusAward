@@ -52,14 +52,7 @@
 					<th><input type="checkbox" value="${semeste.semesterId}"></th>					
 					<th>${semeste.semesterName}</th>	
 					<th>${semeste.creatTime?string('yyyy-MM-dd')}</th>	
-					<th>${semeste.recessTime?string('yyyy-MM-dd')}</th>	
-					
-					<th>
-					<!-- Button trigger modal -->
-<a class="btn btn-success" onclick="$('#updatesemesterById').modal();">修改</a>
-
-
-					</th>
+					<th>${semeste.recessTime?string('yyyy-MM-dd')}</th>				
 					<th>
 				<a class="btn btn-danger" onclick="deletesemester(${semeste.semesterId})" >删除</a>
 					</th>
@@ -70,7 +63,7 @@
 </table>
 
 
-<div class="modal fade bs-example-modal-sm"  id="addsemester" tabindex="-1" role="dialog" aria-labelledby="selectPermissionLabel">
+			<div class="modal fade bs-example-modal-sm"  id="addsemester" tabindex="-1" role="dialog" aria-labelledby="selectPermissionLabel">
 			  <div class="modal-dialog modal-sm" role="document">
 			    <div class="modal-content">
 			      <div class="modal-header">
@@ -94,58 +87,15 @@
 			  </div>
 			</div>
 			
-			 <div class="modal fade bs-example-modal-sm"  id="updatesemesterById" tabindex="-1" role="dialog" aria-labelledby="selectPermissionLabel">
-			  <div class="modal-dialog modal-sm" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title">修改信息</h4>
-			      </div>
-			      <div class="modal-body">
-			    <form method="post" action="" id="updatesemesterById">
-			      <ul>
-					<li>学期名：<input type="text" name="semesterName" id="semesterName"/></li>
-					<li>开始时间：<input type="date" name="creatTime" id="creatTime"/></li>
-					<li>结束时间：<input type="date" name="recessTime" id="recessTime"/></li>
-				  </ul>
-				</form>
-			   </div>
-			    <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			        <button type="button" onclick="updateTch()" class="btn btn-primary">Save</button>
-			      </div>
-			    </div>
-			  </div>
-			</div> 
 			<!-- 添加信息的ajax请求 -->
 			 <script>
 				   function addsemester(){
-				    var semesterName=$("#semesterName").val();
-				    var creatTime=$("#creatTime").val();
-				    var recessTime=$("#recessTime").val();
-					if(semesterName=="" || creatTime=="" || recessTime=="" ){
-							alert("请将数据补充完整");
-					}else{
 						$.getJSON('${basePath}/sys/addsemester.shtml',$('#addsemester').serialize(),function(data,textStatus,jqXHR){
 				    		console.log(data);
 				    		alert(data.scuess); 
 				    		 window.location.reload();
 							});
-					}
-				   }
-   			</script>
-   			<!-- 修改教师信息的ajax请求 -->
-			<script>
-			 
-				   function updatesemesterById(){
-					   
-					   alert("请谨慎修改您的信息");
-						$.getJSON('${basePath}/sys/updatesemesterById.shtml',$('#updatesemesterById').serialize(),function(data,textStatus,jqXHR){
-				    		console.log(data);
-				    		alert(data.message); 
-				    		 window.location.reload();
-							});
-					}
+				   };
    			</script>
    			<!-- 删除教师信息的ajax请求 -->
    			<script>

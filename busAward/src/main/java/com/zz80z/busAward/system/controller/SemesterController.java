@@ -65,6 +65,8 @@ public class SemesterController extends BaseController{
 	@RequestMapping(value="addsemester")
 	@ResponseBody
 	public Map<String, Object> addsem(Semester semester) {
+		Semester semeste = semesterService.selectByPrimaryKey(semester.getSemesterId());
+		if (null == semeste) {
 				try {
 					int count=semesterService.insertSelective(semester);
 					System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!"+count);
@@ -76,7 +78,10 @@ public class SemesterController extends BaseController{
 					resultMap.put("message", "添加失败，请刷新后再试！");
 
 									}
-
+		}else {
+			resultMap.put("status", 500);
+			resultMap.put("message", "编号"+semester.getSemesterId()+"已存在,请不要重复增加！");
+		}
 		return resultMap;
 		
 	}
@@ -90,30 +95,11 @@ public class SemesterController extends BaseController{
 		return resultMap;
 		
 	}
-	//更新
-	@RequestMapping(value = "updatesemesterById")
-	@ResponseBody
-	public Map<String , Object> updatesemester(Semester semester,HttpServletRequest request){
-			System.out.println("11111111111111"+semester);
-			try {
-				request.setCharacterEncoding("UTF-8");
-				int count = semesterService.updateByPrimaryKey(semester);
-				System.out.println("555555555"+count);
-				resultMap.put("status", 200);
-				resultMap.put("successCount", count);
-				resultMap.put("message", "修改成功！");
-			} catch (Exception e) {
-				resultMap.put("status", 500);
-				resultMap.put("message", "修改失败，请刷新后再试！");
-				System.out.println("555555555修改中出现的错误信息"+e);
-			}
-		
-		return resultMap;
-	}
+	
 	
 	@RequestMapping(value = "deletesemester",method=RequestMethod.GET)
 	@ResponseBody
-	public Map<String , Object> deleteTch(Integer semesterId){
+	public Map<String , Object> deletesemester(Integer semesterId){
 		System.out.println("*************"+semesterId);
 			try {
 				int count = semesterService.updateByPrimaryKey(semesterId);
@@ -159,7 +145,6 @@ public class SemesterController extends BaseController{
 		
 		return resultMap;
 	}
-	
 	@RequestMapping(value="semester")
 	public ModelAndView semester() {
 		return new ModelAndView("sysmester");
