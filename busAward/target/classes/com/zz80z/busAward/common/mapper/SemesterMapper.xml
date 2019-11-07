@@ -63,7 +63,7 @@
       #{recessTime,jdbcType=TIMESTAMP}, #{reserve,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zz80z.busAward.common.model.Semester" >
-    insert into b_semester(semester_name,creat_time, recess_time) values (#{semesterName,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP},#{recessTime,jdbcType=TIMESTAMP})
+    insert into b_semester(semester_name,creat_time, recess_time) value (#{semesterName,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP},#{recessTime,jdbcType=TIMESTAMP})
     
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.zz80z.busAward.common.model.Semester" >

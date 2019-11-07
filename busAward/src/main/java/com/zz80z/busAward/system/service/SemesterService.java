@@ -22,4 +22,5 @@ public interface SemesterService {
 
 	int updateByPrimaryKey(Integer semesterId);
 	
+	int deleteByPrimaryKey(Integer semesterId);
 }

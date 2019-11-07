@@ -61,5 +61,11 @@ public class SemesterServiceImpl implements SemesterService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public int deleteByPrimaryKey(Integer semesterId) {
+		// TODO Auto-generated method stub
+		return semesterDao.deleteByPrimaryKey(semesterId);
+	}
 	
 }

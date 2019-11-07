@@ -55,6 +55,7 @@ public class CoinController {
 		stuCoinMap.put("sTGList",sTGList);
 		stuCoinMap.put("group","先进");
 		}else{
+			
 			//创建查询条件
 			Map<String, String> sqlmap=new HashMap<String, String>();
 			Map map=queryTime(nWeek);

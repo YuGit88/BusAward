@@ -102,7 +102,7 @@ public class SemesterController extends BaseController{
 	public Map<String , Object> deletesemester(Integer semesterId){
 		System.out.println("*************"+semesterId);
 			try {
-				int count = semesterService.updateByPrimaryKey(semesterId);
+				int count = semesterService.deleteByPrimaryKey(semesterId);
 				resultMap.put("status", 200);
 				resultMap.put("successCount", count);
 				resultMap.put("message", "删除成功");
