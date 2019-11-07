@@ -38,7 +38,7 @@
 					<h2>学期列表</h2>
 					<hr>
 					<a class="btn btn-success" onclick="$('#addsemester').modal();">新增学期</a>
-<table class="table table-bordered" align="center">
+<table 					class="table table-bordered" align="center">
 <tr>
 					<th>选择</th>
 					<th>学期名</th>
@@ -71,7 +71,7 @@
 			        <h4 class="modal-title">添加信息</h4>
 			      </div>
 			      <div class="modal-body">
-			    <form method="post" action="" id="addsemester">
+			    <form method="post" action="" id="addsemester1">
 			      <ul>
 					<li>学期名：<input type="text" name="semesterName" id="semesterName"/></li>
 					<li>开始时间：<input type="date" name="creatTime" id="creatTime"/></li>
@@ -90,14 +90,14 @@
 			<!-- 添加信息的ajax请求 -->
 			 <script>
 				   function addsemester(){
-						$.getJSON('${basePath}/sys/addsemester.shtml',$('#addsemester').serialize(),function(data,textStatus,jqXHR){
+						$.getJSON("${basePath}/sys/addsemester.shtml",$('#addsemester1').serialize(),function(data,textStatus,jqXHR){
 				    		console.log(data);
-				    		alert(data.scuess); 
+				    		alert(data.message); 
 				    		 window.location.reload();
 							});
 				   };
    			</script>
-   			<!-- 删除教师信息的ajax请求 -->
+   			<!-- 删除信息的ajax请求 -->
    			<script>
 				    function deletesemester(semesterId){   
 				        confirm_ = confirm('您确定要删除该条数据?请谨慎考虑.');

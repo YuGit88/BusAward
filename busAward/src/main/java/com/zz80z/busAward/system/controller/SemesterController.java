@@ -1,8 +1,10 @@
 package com.zz80z.busAward.system.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,16 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.zz80z.busAward.common.controller.BaseController;
 import com.zz80z.busAward.common.model.Award;
 import com.zz80z.busAward.common.model.Semester;
-import com.zz80z.busAward.common.model.Teacher;
 import com.zz80z.busAward.common.utils.LoggerUtils;
 import com.zz80z.busAward.common.utils.StringUtils;
 import com.zz80z.busAward.system.service.AwardService;
@@ -61,18 +66,25 @@ public class SemesterController extends BaseController{
 		resultMap.put("semesters", semesters);
 		return resultMap;
 	}
+	@InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }
 	//添加新学期
 	@RequestMapping(value="addsemester")
 	@ResponseBody
-	public Map<String, Object> addsem(Semester semester) {
+	public Map<String, Object> addsem(Semester semester,HttpServletRequest request) throws Exception {
+		request.setCharacterEncoding("UTF-8");
 		Semester semeste = semesterService.selectByPrimaryKey(semester.getSemesterId());
+		System.out.println(semeste);
 		if (null == semeste) {
 				try {
 					int count=semesterService.insertSelective(semester);
-					System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!"+count);
+					
 						resultMap.put("status", 200);
 						resultMap.put("successCount", count);
-						resultMap.put("scuess", "添加成功");
+						resultMap.put("message", "添加成功");
 				} catch (Exception e) {
 					resultMap.put("status", 500);
 					resultMap.put("message", "添加失败，请刷新后再试！");
